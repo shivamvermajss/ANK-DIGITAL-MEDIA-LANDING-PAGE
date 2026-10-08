@@ -34,36 +34,45 @@ export function FloatingCapabilityCard({ card, isMobile }) {
 
   const isUptimeCard = card.type === 'uptime';
 
+  const activeFloatRange = isMobile
+    ? card.mobileFloatRange || [-2, 2, -2]
+    : card.floatRange || [-6, 6, -6];
+
   return (
-    <motion.div
-      initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, scale: 0.9, y: 15 }}
-      animate={
-        shouldReduceMotion
-          ? { opacity: 1, scale: 1, y: 0 }
-          : {
-              opacity: 1,
-              scale: 1,
-              y: [0, card.floatDistance, 0],
-            }
-      }
-      transition={
-        shouldReduceMotion
-          ? { duration: 0.4 }
-          : {
-              y: {
-                repeat: Infinity,
-                duration: card.duration,
-                ease: 'easeInOut',
-                delay: card.delay,
-              },
-              opacity: { duration: 0.6, delay: card.delay * 0.3 },
-              scale: { duration: 0.6, delay: card.delay * 0.3 },
-            }
-      }
-      whileHover={shouldReduceMotion ? {} : { scale: 1.04, y: -2 }}
-      className={`absolute ${card.desktopPos} z-[25] select-none group cursor-pointer transition-shadow duration-300`}
+    <div
+      className={`absolute ${card.desktopPos} z-[25] select-none pointer-events-auto`}
     >
-      <div className="relative flex items-center gap-2.5 sm:gap-3 p-2.5 sm:p-3 sm:pr-3.5 rounded-2xl bg-white/92 backdrop-blur-xl border border-slate-200/90 ring-1 ring-indigo-500/10 shadow-[0_12px_30px_-8px_rgba(99,102,241,0.14),0_4px_14px_-2px_rgba(15,23,42,0.06)] group-hover:shadow-[0_20px_42px_-8px_rgba(99,102,241,0.25),0_6px_18px_rgba(15,23,42,0.08)] group-hover:border-indigo-300 transition-all max-w-[215px] sm:max-w-[245px] lg:max-w-[265px] overflow-hidden">
+      <motion.div
+        initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, scale: 0.95, y: 12 }}
+        animate={
+          shouldReduceMotion
+            ? { opacity: 1, scale: 1, y: 0 }
+            : {
+                opacity: 1,
+                scale: 1,
+                y: activeFloatRange,
+              }
+        }
+        transition={
+          shouldReduceMotion
+            ? { duration: 0.3 }
+            : {
+                y: {
+                  repeat: Infinity,
+                  duration: card.duration,
+                  ease: 'easeInOut',
+                  delay: card.delay,
+                },
+                opacity: { duration: 0.5, delay: card.delay * 0.2 },
+                scale: { duration: 0.5, delay: card.delay * 0.2 },
+              }
+        }
+      >
+        <motion.div
+          whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="relative flex items-center gap-2.5 sm:gap-3 p-2.5 sm:p-3 sm:pr-3.5 rounded-2xl bg-white/92 backdrop-blur-xl border border-slate-200/90 ring-1 ring-indigo-500/10 shadow-[0_12px_30px_-8px_rgba(99,102,241,0.14),0_4px_14px_-2px_rgba(15,23,42,0.06)] hover:shadow-[0_20px_42px_-6px_rgba(99,102,241,0.28),0_8px_20px_rgba(15,23,42,0.08)] hover:border-indigo-300 transition-shadow duration-300 max-w-[215px] sm:max-w-[245px] lg:max-w-[265px] overflow-hidden group cursor-pointer"
+        >
         {/* Top edge glossy highlight sheen */}
         <div className="absolute top-0 inset-x-4 h-[1px] bg-gradient-to-r from-transparent via-white to-transparent opacity-80" />
 
@@ -133,7 +142,8 @@ export function FloatingCapabilityCard({ card, isMobile }) {
             <ArrowRight className="w-3.5 h-3.5" />
           </div>
         )}
-      </div>
+      </motion.div>
     </motion.div>
+  </div>
   );
 }

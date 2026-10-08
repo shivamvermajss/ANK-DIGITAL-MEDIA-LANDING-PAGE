@@ -2,24 +2,83 @@ import React, { useRef, useState, useCallback } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { ServiceIcon } from './ServiceIcon';
+import { CapabilityPill } from './CapabilityPill';
+
+const MARKETING_ACCENT_STYLES = {
+  indigo: {
+    borderHover: 'rgba(99, 102, 241, 0.35)',
+    shadowHover: '0 20px 45px -12px rgba(99, 102, 241, 0.16)',
+    spotlight: 'rgba(99, 102, 241, 0.10)',
+    borderSheen: 'rgba(99, 102, 241, 0.30)',
+    iconBgHover: 'rgba(238, 242, 255, 0.95)',
+    iconColor: '#4F46E5',
+    iconGlow: '0 4px 14px rgba(99, 102, 241, 0.25)',
+    ctaTextHover: '#4F46E5',
+    accentKey: 'indigo',
+  },
+  violet: {
+    borderHover: 'rgba(139, 92, 246, 0.35)',
+    shadowHover: '0 20px 45px -12px rgba(139, 92, 246, 0.16)',
+    spotlight: 'rgba(139, 92, 246, 0.10)',
+    borderSheen: 'rgba(139, 92, 246, 0.30)',
+    iconBgHover: 'rgba(245, 243, 255, 0.95)',
+    iconColor: '#7C3AED',
+    iconGlow: '0 4px 14px rgba(139, 92, 246, 0.25)',
+    ctaTextHover: '#7C3AED',
+    accentKey: 'violet',
+  },
+  purple: {
+    borderHover: 'rgba(168, 85, 247, 0.35)',
+    shadowHover: '0 20px 45px -12px rgba(168, 85, 247, 0.16)',
+    spotlight: 'rgba(168, 85, 247, 0.10)',
+    borderSheen: 'rgba(168, 85, 247, 0.30)',
+    iconBgHover: 'rgba(250, 245, 255, 0.95)',
+    iconColor: '#9333EA',
+    iconGlow: '0 4px 14px rgba(168, 85, 247, 0.25)',
+    ctaTextHover: '#9333EA',
+    accentKey: 'purple',
+  },
+  blue: {
+    borderHover: 'rgba(59, 130, 246, 0.35)',
+    shadowHover: '0 20px 45px -12px rgba(59, 130, 246, 0.16)',
+    spotlight: 'rgba(59, 130, 246, 0.10)',
+    borderSheen: 'rgba(59, 130, 246, 0.30)',
+    iconBgHover: 'rgba(239, 246, 255, 0.95)',
+    iconColor: '#2563EB',
+    iconGlow: '0 4px 14px rgba(59, 130, 246, 0.25)',
+    ctaTextHover: '#2563EB',
+    accentKey: 'blue',
+  },
+};
+
+const SERVICE_ACCENT_MAP = {
+  'digital-marketing-overview': 'indigo',
+  seo: 'indigo',
+  'social-media': 'violet',
+  'influencer-marketing': 'purple',
+  gmb: 'blue',
+  'brand-building': 'violet',
+};
 
 /**
- * MarketingServiceCard Component
+ * MarketingServiceCard Component (Sections 1-7, 10, 11)
  * 
- * Individual service card inside the 2 x 3 right-side grid.
- * Features:
+ * Individual service card inside the 2 x 3 right-side grid:
  * - Dynamic cursor spotlight tracked with CSS variables (--mouse-x, --mouse-y)
- * - Interactive gradient border sheen on pointer interaction (indigo -> violet)
- * - Hover lift: translateY(-4px) with soft ambient shadow
- * - Premium icon capsule with scale and color transitions
- * - Capability descriptor pills (no fake claims)
- * - Interactive arrow CTA with circular background reveal
- * - Respects prefers-reduced-motion
+ * - Interactive gradient border sheen on pointer interaction
+ * - Refined -4px hover lift with cubic-bezier(0.16, 1, 0.3, 1) and tinted shadow
+ * - Premium icon capsule with scale(1.06), rotate(1deg), and soft colored glow
+ * - Title micro-motion: translateY(-0.5px)
+ * - Interactive capability pills with brand accents & icons
+ * - Coordinated CTA arrow translate (+8px) and text color shift
  */
 export function MarketingServiceCard({ service, index = 0 }) {
   const cardRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+
+  const accentName = SERVICE_ACCENT_MAP[service.id] || 'indigo';
+  const style = MARKETING_ACCENT_STYLES[accentName] || MARKETING_ACCENT_STYLES.indigo;
 
   const handleMouseMove = useCallback(
     (e) => {
@@ -55,27 +114,42 @@ export function MarketingServiceCard({ service, index = 0 }) {
         delay: shouldReduceMotion ? 0 : index * 0.05,
         ease: [0.16, 1, 0.3, 1],
       }}
-      whileHover={shouldReduceMotion ? {} : { y: -4 }}
-      className="group relative p-5 sm:p-6 rounded-2xl bg-white/80 backdrop-blur-xl border border-slate-200/90 shadow-[0_12px_28px_-6px_rgba(15,23,42,0.06),0_4px_12px_rgba(168,85,247,0.04)] hover:shadow-[0_16px_32px_-8px_rgba(168,85,247,0.12),0_4px_12px_rgba(15,23,42,0.04)] hover:border-slate-300/90 transition-all duration-300 flex flex-col justify-between overflow-hidden select-none"
+      whileHover={
+        shouldReduceMotion
+          ? {}
+          : {
+              y: -4,
+              transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
+            }
+      }
+      className="group relative p-5 sm:p-6 rounded-2xl bg-white/82 backdrop-blur-xl border border-slate-200/85 shadow-[0_12px_28px_-6px_rgba(15,23,42,0.06)] hover:shadow-xl transition-all duration-300 flex flex-col justify-between overflow-hidden select-none"
+      style={{
+        borderColor: isHovered ? style.borderHover : 'rgba(226, 232, 240, 0.85)',
+        boxShadow: isHovered
+          ? `${style.shadowHover}, 0 4px 12px rgba(15, 23, 42, 0.04)`
+          : '0 12px 28px -6px rgba(15, 23, 42, 0.06)',
+      }}
     >
-      {/* 1. Dynamic Cursor Spotlight (Follows mouse position) */}
-      {!shouldReduceMotion && isHovered && (
+      {/* 1. Dynamic Cursor Spotlight (Follows mouse position subtly, Section 1) */}
+      {!shouldReduceMotion && (
         <>
           {/* Subtle Radial Light Glow */}
           <div
-            className="pointer-events-none absolute inset-0 rounded-2xl transition-opacity duration-300"
+            className={`pointer-events-none absolute inset-0 rounded-2xl transition-opacity duration-300 hidden sm:block ${
+              isHovered ? 'opacity-100' : 'opacity-0'
+            }`}
             style={{
-              background:
-                'radial-gradient(350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(99, 102, 241, 0.10), transparent 45%)',
+              background: `radial-gradient(360px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), ${style.spotlight}, transparent 42%)`,
             }}
             aria-hidden="true"
           />
-          {/* Interactive Gradient Border Sheen (Indigo -> Violet) */}
+          {/* Section 3: Interactive Gradient Border Sheen */}
           <div
-            className="pointer-events-none absolute inset-0 rounded-2xl transition-opacity duration-300"
+            className={`pointer-events-none absolute inset-0 rounded-2xl transition-opacity duration-300 hidden sm:block ${
+              isHovered ? 'opacity-100' : 'opacity-0'
+            }`}
             style={{
-              background:
-                'radial-gradient(280px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(99, 102, 241, 0.35), rgba(168, 85, 247, 0.25) 40%, transparent 65%)',
+              background: `radial-gradient(300px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), ${style.borderSheen}, transparent 60%)`,
               mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
               WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
               maskComposite: 'exclude',
@@ -92,25 +166,43 @@ export function MarketingServiceCard({ service, index = 0 }) {
         <div>
           {/* Header Row: Icon Capsule + Interactive Arrow CTA */}
           <div className="flex items-center justify-between mb-3.5">
-            {/* Premium Icon Capsule */}
-            <div className="w-10 h-10 rounded-xl bg-slate-50/90 text-purple-600 flex items-center justify-center border border-slate-200/90 shadow-2xs group-hover:bg-indigo-50/90 group-hover:text-indigo-600 group-hover:scale-105 group-hover:border-indigo-200/70 transition-all duration-200">
+            {/* Premium Icon Capsule (Section 4) */}
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-300 shadow-2xs group-hover:scale-[1.06] group-hover:rotate-1"
+              style={{
+                background: isHovered ? style.iconBgHover : 'rgba(248, 250, 252, 0.85)',
+                borderColor: isHovered ? style.borderHover : 'rgba(226, 232, 240, 0.85)',
+                color: isHovered ? style.iconColor : '#475569',
+                boxShadow: isHovered ? style.iconGlow : 'none',
+                transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
+            >
               <ServiceIcon name={service.icon} className="w-5 h-5 transition-transform" />
             </div>
 
-            {/* Interactive Arrow CTA with subtle circular background */}
+            {/* Interactive Arrow CTA with group/cta translation (Section 5) */}
             <a
               href="#contact"
               aria-label={`Inquire about ${service.title}`}
-              className="w-7 h-7 rounded-full flex items-center justify-center text-slate-300 group-hover:text-indigo-600 group-hover:bg-indigo-50/90 group-hover:border group-hover:border-indigo-200/60 transition-all duration-200"
+              className="group/cta w-8 h-8 rounded-full flex items-center justify-center text-slate-300 hover:text-indigo-600 hover:bg-indigo-50/90 hover:border hover:border-indigo-200/60 transition-all duration-200 cursor-pointer"
             >
-              <div className="group-hover:translate-x-1.5 transition-transform duration-300">
-                <ArrowRight className="w-3.5 h-3.5" />
+              <div className="group-hover/cta:translate-x-2 transition-transform duration-300">
+                <ArrowRight
+                  className="w-4 h-4 transition-colors duration-300"
+                  style={{ color: isHovered ? style.ctaTextHover : undefined }}
+                />
               </div>
             </a>
           </div>
 
-          {/* Service Title */}
-          <h5 className="font-heading font-extrabold text-base text-[#0F172A] group-hover:text-indigo-950 transition-colors mb-1.5 leading-snug">
+          {/* Service Title (Section 10 Micro-Motion) */}
+          <h5
+            className="font-heading font-extrabold text-base text-[#0F172A] transition-all duration-300 mb-1.5 leading-snug group-hover:-translate-y-0.5"
+            style={{
+              color: isHovered ? '#0F172A' : '#0F172A',
+              transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+            }}
+          >
             {service.title}
           </h5>
 
@@ -120,16 +212,11 @@ export function MarketingServiceCard({ service, index = 0 }) {
           </p>
         </div>
 
-        {/* Capability Pills */}
+        {/* Capability Pills (Sections 6 & 15) */}
         {service.capabilities && service.capabilities.length > 0 && (
-          <div className="flex flex-wrap items-center gap-1.5 pt-2 border-t border-slate-100/80">
+          <div className="flex flex-wrap items-center gap-1.5 pt-2.5 border-t border-slate-100/90">
             {service.capabilities.map((cap) => (
-              <span
-                key={cap}
-                className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] sm:text-[10.5px] font-mono font-medium text-slate-500 bg-slate-50/85 border border-slate-200/80 hover:bg-indigo-50/90 hover:border-indigo-300/40 hover:text-indigo-600 transition-all duration-200 cursor-default"
-              >
-                {cap}
-              </span>
+              <CapabilityPill key={cap} text={cap} accent={style.accentKey} />
             ))}
           </div>
         )}

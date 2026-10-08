@@ -1,29 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import {
   TECHNOLOGIES_INTRO,
-  TECHNOLOGY_CATEGORIES,
+  DOMAINS_DATA,
+  DOMAINS_LIST,
 } from '../../data/technologies';
 import { TechnologyCategory } from './technologies/TechnologyCategory';
 import { TechnologyDetail } from './technologies/TechnologyDetail';
 import { TechnologyEcosystem } from './technologies/TechnologyEcosystem';
 
 /**
- * Technologies Section Component (2026 Premium Digital Studio Redesign)
+ * Technologies Section Component (Technology Ecosystem)
  * 
- * Living technology ecosystem architecture:
- * - Subtle 22px technical dot-grid canvas
- * - Large ambient radial glows (indigo, purple, cyan)
- * - Capsule badge: [ ● // TECHNOLOGY ECOSYSTEM ]
- * - High-impact centered typography with animated gradient text
- * - Left static domain display cards (Frontend, Backend, Database, Integration, Digital)
- * - Bottom floating tech detail card with vector logos
- * - Right live SVG ecosystem canvas with animated data packet particles
+ * Crash-free, safe data & state architecture:
+ * - Safe activeTabId state with guaranteed fallback to 'frontend'
+ * - Defensive resolution preventing blank-screen crashes on all 5 domains
+ * - Synchronized state between left tabs, detail card, and right 3D ecosystem diagram
  * - Full prefers-reduced-motion support
  */
 export function Technologies() {
   const shouldReduceMotion = useReducedMotion();
-  const defaultCategory = TECHNOLOGY_CATEGORIES[0];
+  const [activeTabId, setActiveTabId] = useState('frontend');
+
+  // Safe active domain resolution with guaranteed fallback to frontend
+  const activeDomain =
+    DOMAINS_DATA[activeTabId] || DOMAINS_DATA.frontend;
+
+  const handleSelectTab = (tabId) => {
+    if (DOMAINS_DATA[tabId]) {
+      setActiveTabId(tabId);
+    }
+  };
 
   return (
     <section
@@ -42,7 +49,7 @@ export function Technologies() {
       />
 
       {/* 2. Large Drifting Ambient Radial Glows */}
-      {/* Primary Orb: Soft Indigo (Positioned behind ecosystem canvas) */}
+      {/* Primary Orb: Soft Indigo */}
       <motion.div
         animate={
           shouldReduceMotion
@@ -60,7 +67,7 @@ export function Technologies() {
         aria-hidden="true"
       />
 
-      {/* Secondary Orb: Soft Purple (Positioned toward left) */}
+      {/* Secondary Orb: Soft Purple */}
       <motion.div
         animate={
           shouldReduceMotion
@@ -78,7 +85,7 @@ export function Technologies() {
         aria-hidden="true"
       />
 
-      {/* Tertiary Orb: Subtle Cyan Accent (Center Bottom) */}
+      {/* Tertiary Orb: Subtle Cyan Accent */}
       <div
         className="pointer-events-none absolute bottom-12 left-1/3 w-[500px] h-[400px] rounded-full blur-[130px] opacity-[0.08]"
         style={{
@@ -96,7 +103,7 @@ export function Technologies() {
           transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
           className="text-center max-w-3xl mx-auto mb-14 sm:mb-18 lg:mb-20"
         >
-          {/* Upgraded Capsule Badge: [ ● // TECHNOLOGY ECOSYSTEM ] */}
+          {/* Capsule Badge: [ ● // TECHNOLOGY ECOSYSTEM ] */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/85 backdrop-blur-xl border border-indigo-200/60 shadow-[0_4px_16px_rgba(99,102,241,0.08)] mb-5">
             <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
             <span className="text-xs font-mono font-bold tracking-widest text-indigo-700 uppercase">
@@ -132,20 +139,28 @@ export function Technologies() {
                 Technology Domains
               </span>
               <span className="text-xs font-mono text-indigo-600 font-semibold">
-                TECHNOLOGY ECOSYSTEM
+                INTERACTIVE ARCHITECTURE
               </span>
             </div>
 
-            {/* Left Static Domain Display Cards */}
-            <TechnologyCategory categories={TECHNOLOGY_CATEGORIES} />
+            {/* Left Synchronized Domain Selectors with layoutId="activePill" */}
+            <TechnologyCategory
+              categories={DOMAINS_LIST}
+              selectedDomain={activeTabId}
+              onSelectDomain={handleSelectTab}
+            />
 
-            {/* Default Technology Detail Panel */}
-            <TechnologyDetail category={defaultCategory} />
+            {/* Synchronized Technology Detail Panel with Defensive Fallback */}
+            <TechnologyDetail activeDomain={activeDomain} />
           </div>
 
           {/* RIGHT: Interactive Technology Ecosystem Visualization (7 cols on desktop) */}
           <div className="lg:col-span-7">
-            <TechnologyEcosystem categories={TECHNOLOGY_CATEGORIES} />
+            <TechnologyEcosystem
+              categories={DOMAINS_LIST}
+              selectedDomain={activeTabId}
+              onSelectDomain={handleSelectTab}
+            />
           </div>
         </div>
       </div>

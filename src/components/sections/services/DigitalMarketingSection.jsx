@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, TrendingUp } from 'lucide-react';
 import { MARKETING_CATEGORY } from '../../../data/services';
@@ -11,13 +11,27 @@ import { MarketingServiceCard } from './MarketingServiceCard';
  * Upgraded into a Premium Digital Growth System:
  * - Subtle technical background dot-grid and dual ambient lighting orbs
  * - Refined milestone header with blurred headline glow and aligned subtitle
- * - Left strategic centerpiece card with frosted glass depth and "LIVE DIGITAL GROWTH" micro-analytics visual
+ * - Left strategic centerpiece card with frosted glass depth, cursor spotlight, border sheen, and "LIVE DIGITAL GROWTH" micro-analytics visual
  * - 6 interactive right-side capability cards with cursor spotlight, gradient border sheen, icon capsules, and capability pills
  * - Zero fake statistics or marketing claims
  * - Fully responsive & respects prefers-reduced-motion
  */
 export function DigitalMarketingSection() {
   const shouldReduceMotion = useReducedMotion();
+  const featuredCardRef = useRef(null);
+  const [isFeaturedHovered, setIsFeaturedHovered] = useState(false);
+
+  const handleFeaturedMouseMove = useCallback(
+    (e) => {
+      if (shouldReduceMotion || !featuredCardRef.current) return;
+      const rect = featuredCardRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      featuredCardRef.current.style.setProperty('--mouse-x', `${x}px`);
+      featuredCardRef.current.style.setProperty('--mouse-y', `${y}px`);
+    },
+    [shouldReduceMotion]
+  );
 
   return (
     <div className="relative mb-24 sm:mb-28 lg:mb-36 select-none">
@@ -116,65 +130,119 @@ export function DigitalMarketingSection() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-stretch">
         
         {/* ======================================================== */}
-        {/* LEFT: STRATEGIC FEATURED CARD (~42%)                     */}
+        {/* LEFT: STRATEGIC FEATURED CARD (~42%) (Section 8)         */}
         {/* ======================================================== */}
         <motion.div
+          ref={featuredCardRef}
+          onMouseMove={handleFeaturedMouseMove}
+          onMouseEnter={() => setIsFeaturedHovered(true)}
+          onMouseLeave={() => setIsFeaturedHovered(false)}
           initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="lg:col-span-5 rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden transition-all duration-300 backdrop-blur-xl"
+          whileHover={
+            shouldReduceMotion
+              ? {}
+              : {
+                  y: -4,
+                  transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
+                }
+          }
+          className="group lg:col-span-5 rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden transition-all duration-300 backdrop-blur-xl select-none"
           style={{
             background:
-              'linear-gradient(145deg, rgba(255, 255, 255, 0.96) 0%, rgba(245, 243, 255, 0.82) 100%)',
-            border: '1px solid rgba(139, 92, 246, 0.14)',
-            boxShadow: '0 24px 50px -28px rgba(99, 102, 241, 0.22)',
+              'linear-gradient(145deg, rgba(255, 255, 255, 0.96) 0%, rgba(245, 243, 255, 0.85) 100%)',
+            border: isFeaturedHovered
+              ? '1px solid rgba(139, 92, 246, 0.40)'
+              : '1px solid rgba(139, 92, 246, 0.16)',
+            boxShadow: isFeaturedHovered
+              ? '0 24px 50px -20px rgba(139, 92, 246, 0.22), 0 4px 16px rgba(15, 23, 42, 0.04)'
+              : '0 20px 45px -25px rgba(99, 102, 241, 0.16)',
           }}
         >
-          {/* Subtle Ambient Light Orb Inside Card */}
+          {/* Dynamic Cursor Spotlight (Section 1) */}
+          {!shouldReduceMotion && (
+            <>
+              <div
+                className={`pointer-events-none absolute inset-0 rounded-3xl transition-opacity duration-300 hidden sm:block ${
+                  isFeaturedHovered ? 'opacity-100' : 'opacity-0'
+                }`}
+                style={{
+                  background:
+                    'radial-gradient(450px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(139, 92, 246, 0.12), transparent 42%)',
+                }}
+                aria-hidden="true"
+              />
+              {/* Border Sheen */}
+              <div
+                className={`pointer-events-none absolute inset-0 rounded-3xl transition-opacity duration-300 hidden sm:block ${
+                  isFeaturedHovered ? 'opacity-100' : 'opacity-0'
+                }`}
+                style={{
+                  background:
+                    'radial-gradient(380px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(139, 92, 246, 0.32), rgba(99, 102, 241, 0.18) 35%, transparent 60%)',
+                  mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                  WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                  maskComposite: 'exclude',
+                  WebkitMaskComposite: 'destination-out',
+                  padding: '1px',
+                }}
+                aria-hidden="true"
+              />
+            </>
+          )}
+
+          {/* Ambient Light Orb Inside Card */}
           <div
             className="absolute top-0 right-0 w-64 h-64 bg-purple-400/12 rounded-full blur-3xl pointer-events-none -z-0"
             aria-hidden="true"
           />
 
           <div className="relative z-10 mb-6">
-            {/* Top Icon Capsule */}
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white flex items-center justify-center shadow-md mb-5">
+            {/* Top Icon Capsule with hover micro-motion (Section 4) */}
+            <div
+              className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white flex items-center justify-center shadow-md mb-5 group-hover:scale-[1.06] group-hover:rotate-1 group-hover:shadow-[0_4px_16px_rgba(139,92,246,0.30)] transition-all duration-300"
+              style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }}
+            >
               <TrendingUp className="w-6 h-6" />
             </div>
 
-            {/* Eyebrow & Headline */}
+            {/* Eyebrow & Headline (Section 10) */}
             <span className="text-xs font-mono font-bold uppercase tracking-wider text-purple-700 block mb-1.5">
               Strategic Visibility
             </span>
-            <h4 className="font-heading font-black text-2xl sm:text-3xl text-[#0F172A] tracking-tight leading-snug mb-3">
+            <h4
+              className="font-heading font-black text-2xl sm:text-3xl text-[#0F172A] tracking-tight leading-snug mb-3 group-hover:-translate-y-0.5 transition-transform duration-300"
+              style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }}
+            >
               Multi-Channel Digital Reach
             </h4>
             <p className="text-sm text-[#475569] font-sans leading-relaxed mb-6">
               Strategic visibility across organic search, social platforms, local discoverability, and brand positioning to attract and retain your audience.
             </p>
 
-            {/* LIVE DIGITAL GROWTH MICRO-ANALYTICS VISUAL */}
+            {/* LIVE DIGITAL GROWTH MICRO-ANALYTICS VISUAL (Preserved completely) */}
             <GrowthAnalyticsVisual />
           </div>
 
-          {/* Refined Button-Link CTA */}
+          {/* Refined Button-Link CTA (Section 5) */}
           <div className="relative z-10 pt-4 border-t border-slate-200/60 mt-2">
             <a
               href="#contact"
               aria-label="Inquire about Digital Marketing Campaign Strategy"
-              className="group/cta w-full inline-flex items-center justify-between px-3.5 py-2.5 rounded-[10px] text-xs font-mono text-slate-700 transition-all duration-200 cursor-pointer select-none hover:text-purple-700 hover:bg-purple-50/80 hover:border-purple-200/80 hover:shadow-[0_6px_16px_-8px_rgba(139,92,246,0.25)]"
+              className="group/cta w-full inline-flex items-center justify-between px-3.5 py-2.5 rounded-[12px] text-xs font-mono text-slate-700 transition-all duration-300 cursor-pointer select-none hover:text-purple-700 hover:bg-purple-50/85 hover:border-purple-200/85 hover:shadow-[0_6px_16px_-8px_rgba(139,92,246,0.25)]"
               style={{
-                background: 'rgba(255, 255, 255, 0.85)',
+                background: 'rgba(255, 255, 255, 0.88)',
                 border: '1px solid rgba(226, 232, 240, 0.85)',
               }}
             >
               <span className="flex items-center gap-1.5 font-semibold">
-                <span>Plan A Campaign</span>
+                <span className="transition-colors duration-300 group-hover/cta:text-purple-700">Plan A Campaign</span>
                 <span className="text-slate-400 font-normal">• Strategy Consultation</span>
               </span>
-              <div className="flex items-center gap-1 group-hover/cta:translate-x-1.5 transition-transform duration-200">
-                <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover/cta:text-purple-700 transition-colors" />
+              <div className="flex items-center gap-1">
+                <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover/cta:text-purple-700 group-hover/cta:translate-x-2 transition-all duration-300" />
               </div>
             </a>
           </div>

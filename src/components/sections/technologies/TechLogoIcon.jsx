@@ -1,17 +1,12 @@
-import React from 'react';
 import {
   Code2,
-  Server,
-  Database,
-  Globe,
   Shield,
-  Layers,
   Smartphone,
   ShoppingBag,
   AppWindow,
-  Cpu,
   Boxes,
-  Zap,
+  GitBranch,
+  Layout,
 } from 'lucide-react';
 
 /**

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Files, Search, GitBranch, Settings } from 'lucide-react';
 
 /**
@@ -57,50 +58,8 @@ export function WorkspaceScreen() {
             ))}
           </div>
 
-          {/* Syntax-Highlighted Real React Code */}
-          <div className="text-slate-300 whitespace-pre overflow-hidden flex-1 font-mono">
-            <div>
-              <span className="text-purple-400">import</span> React{' '}
-              <span className="text-purple-400">from</span>{' '}
-              <span className="text-emerald-400">'react'</span>;
-            </div>
-            <div>
-              <span className="text-purple-400">import</span> &#123; motion &#125;{' '}
-              <span className="text-purple-400">from</span>{' '}
-              <span className="text-emerald-400">'framer-motion'</span>;
-            </div>
-            <div className="text-slate-500 mt-0.5">// ANK Digital Engineering</div>
-            <div>
-              <span className="text-purple-400">export default function</span>{' '}
-              <span className="text-cyan-400 font-semibold">Hero</span>() &#123;
-            </div>
-            <div className="pl-2.5">
-              <span className="text-purple-400">return</span> (
-            </div>
-            <div className="pl-4">
-              &lt;<span className="text-pink-400">div</span>{' '}
-              <span className="text-sky-300">className</span>=
-              <span className="text-emerald-400">"hero"</span>&gt;
-            </div>
-            <div className="pl-6">
-              &lt;<span className="text-pink-400">h1</span>&gt;
-              <span className="text-white font-medium">Build Digital</span>
-            </div>
-            <div className="pl-8">
-              <span className="text-cyan-300">Experiences</span>
-              &lt;/<span className="text-pink-400">h1</span>&gt;
-            </div>
-            <div className="pl-6">
-              &lt;<span className="text-pink-400">p</span>&gt;
-              <span className="text-slate-400">That Move Business.</span>
-              &lt;/<span className="text-pink-400">p</span>&gt;
-            </div>
-            <div className="pl-4">
-              &lt;/<span className="text-pink-400">div</span>&gt;
-            </div>
-            <div className="pl-2.5">);</div>
-            <div>&#125;</div>
-          </div>
+          {/* Syntax-Highlighted Real React Code with Progressive Typing */}
+          <TypingCodeEditor />
         </div>
 
         {/* RIGHT PANE: LIVE APPLICATION PREVIEW */}
@@ -136,6 +95,210 @@ export function WorkspaceScreen() {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+const CODE_LINES = [
+  {
+    tokens: [
+      { text: 'import', className: 'text-purple-400' },
+      { text: ' React ' },
+      { text: 'from', className: 'text-purple-400' },
+      { text: ' ' },
+      { text: "'react'", className: 'text-emerald-400' },
+      { text: ';' },
+    ],
+  },
+  {
+    tokens: [
+      { text: 'import', className: 'text-purple-400' },
+      { text: ' { motion } ' },
+      { text: 'from', className: 'text-purple-400' },
+      { text: ' ' },
+      { text: "'framer-motion'", className: 'text-emerald-400' },
+      { text: ';' },
+    ],
+  },
+  {
+    className: 'text-slate-500 mt-0.5',
+    tokens: [
+      { text: '// ANK Digital Engineering', className: 'text-slate-500' },
+    ],
+  },
+  {
+    tokens: [
+      { text: 'export default function', className: 'text-purple-400' },
+      { text: ' ' },
+      { text: 'Hero', className: 'text-cyan-400 font-semibold' },
+      { text: '() {' },
+    ],
+  },
+  {
+    className: 'pl-2.5',
+    tokens: [
+      { text: 'return', className: 'text-purple-400' },
+      { text: ' (' },
+    ],
+  },
+  {
+    className: 'pl-4',
+    tokens: [
+      { text: '<' },
+      { text: 'div', className: 'text-pink-400' },
+      { text: ' ' },
+      { text: 'className', className: 'text-sky-300' },
+      { text: '=' },
+      { text: '"hero"', className: 'text-emerald-400' },
+      { text: '>' },
+    ],
+  },
+  {
+    className: 'pl-6',
+    tokens: [
+      { text: '<' },
+      { text: 'h1', className: 'text-pink-400' },
+      { text: '>' },
+      { text: 'Build Digital', className: 'text-white font-medium' },
+    ],
+  },
+  {
+    className: 'pl-8',
+    tokens: [
+      { text: 'Experiences', className: 'text-cyan-300' },
+      { text: '</' },
+      { text: 'h1', className: 'text-pink-400' },
+      { text: '>' },
+    ],
+  },
+  {
+    className: 'pl-6',
+    tokens: [
+      { text: '<' },
+      { text: 'p', className: 'text-pink-400' },
+      { text: '>' },
+      { text: 'That Move Business.', className: 'text-slate-400' },
+      { text: '</' },
+      { text: 'p', className: 'text-pink-400' },
+      { text: '>' },
+    ],
+  },
+  {
+    className: 'pl-4',
+    tokens: [
+      { text: '</' },
+      { text: 'div', className: 'text-pink-400' },
+      { text: '>' },
+    ],
+  },
+  {
+    className: 'pl-2.5',
+    tokens: [{ text: ');' }],
+  },
+  {
+    tokens: [{ text: '}' }],
+  },
+];
+
+let totalCharsAccum = 0;
+const LINES_WITH_RANGES = CODE_LINES.map((line) => {
+  let lineLen = 0;
+  line.tokens.forEach((t) => {
+    lineLen += t.text.length;
+  });
+  const start = totalCharsAccum;
+  totalCharsAccum += lineLen;
+  return {
+    ...line,
+    length: lineLen,
+    startChar: start,
+    endChar: totalCharsAccum,
+  };
+});
+const TOTAL_CODE_CHARS = totalCharsAccum;
+
+function TypingCodeEditor() {
+  const shouldReduceMotion = useReducedMotion();
+  const [charCount, setCharCount] = useState(shouldReduceMotion ? TOTAL_CODE_CHARS : 0);
+  const [isFading, setIsFading] = useState(false);
+
+  useEffect(() => {
+    if (shouldReduceMotion) {
+      setCharCount(TOTAL_CODE_CHARS);
+      return;
+    }
+
+    let timer;
+    if (charCount < TOTAL_CODE_CHARS) {
+      timer = setTimeout(() => {
+        setCharCount((prev) => prev + 1);
+      }, 42);
+    } else {
+      // Reached complete code: pause 2.6 seconds, then smooth fade and reset
+      timer = setTimeout(() => {
+        setIsFading(true);
+        const resetTimer = setTimeout(() => {
+          setCharCount(0);
+          setIsFading(false);
+        }, 350);
+        return () => clearTimeout(resetTimer);
+      }, 2600);
+    }
+
+    return () => clearTimeout(timer);
+  }, [charCount, shouldReduceMotion]);
+
+  return (
+    <div
+      className={`text-slate-300 whitespace-pre overflow-hidden flex-1 font-mono transition-opacity duration-300 ${
+        isFading ? 'opacity-25' : 'opacity-100'
+      }`}
+    >
+      {LINES_WITH_RANGES.map((line, lineIndex) => {
+        const isPast = charCount >= line.endChar;
+        const isCurrent = charCount > line.startChar && charCount < line.endChar;
+        const isFuture = charCount <= line.startChar;
+        const isLastLineAndComplete =
+          charCount === TOTAL_CODE_CHARS && lineIndex === LINES_WITH_RANGES.length - 1;
+
+        if (isFuture && !shouldReduceMotion) {
+          return (
+            <div key={lineIndex} className={`h-[18px] sm:h-[20px] ${line.className || ''}`} />
+          );
+        }
+
+        let remainingChars =
+          isPast || shouldReduceMotion
+            ? line.length
+            : Math.max(0, charCount - line.startChar);
+
+        return (
+          <div key={lineIndex} className={`h-[18px] sm:h-[20px] flex items-center ${line.className || ''}`}>
+            {line.tokens.map((token, tokenIndex) => {
+              if (remainingChars <= 0 && !shouldReduceMotion && !isPast) return null;
+              const textToRender =
+                isPast || shouldReduceMotion
+                  ? token.text
+                  : token.text.slice(0, remainingChars);
+              remainingChars = Math.max(0, remainingChars - token.text.length);
+
+              return (
+                <span key={tokenIndex} className={token.className || undefined}>
+                  {textToRender}
+                </span>
+              );
+            })}
+            {(isCurrent || isLastLineAndComplete) && !shouldReduceMotion && (
+              <motion.span
+                aria-hidden="true"
+                animate={{ opacity: [1, 0, 1] }}
+                transition={{ duration: 0.85, repeat: Infinity, ease: 'linear' }}
+                className="inline-block w-[1.5px] h-[10.5px] sm:h-[11.5px] bg-cyan-400 ml-0.5 align-middle shadow-[0_0_4px_#38bdf8]"
+              />
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }

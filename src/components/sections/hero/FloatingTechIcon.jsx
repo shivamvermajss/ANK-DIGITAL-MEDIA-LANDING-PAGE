@@ -92,43 +92,49 @@ const BRAND_ICONS = {
  * FloatingTechIcon Component
  * Dark glossy squircles with glowing borders and brand logos matching reference image.
  */
-export function FloatingTechIcon({ item }) {
+export function FloatingTechIcon({ item, isMobile }) {
   const shouldReduceMotion = useReducedMotion();
   const IconComponent = BRAND_ICONS[item.icon] || ReactIcon;
+  const activeFloatRange = isMobile
+    ? item.mobileFloatRange || [-1.5, 1.5, -1.5]
+    : item.floatRange || [-3, 3, -3];
 
   return (
-    <motion.div
-      initial={shouldReduceMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-      animate={
-        shouldReduceMotion
-          ? { opacity: 1, scale: 1, y: 0 }
-          : {
-              opacity: 1,
-              scale: 1,
-              y: [0, -6, 0],
-            }
-      }
-      transition={
-        shouldReduceMotion
-          ? { duration: 0.4 }
-          : {
-              y: {
-                repeat: Infinity,
-                duration: item.duration,
-                ease: 'easeInOut',
-                delay: item.delay,
-              },
-              opacity: { duration: 0.5, delay: item.delay },
-              scale: { duration: 0.5, delay: item.delay },
-            }
-      }
+    <div
       className={`absolute ${item.pos} z-[22] select-none pointer-events-none hidden sm:block`}
     >
-      <div
-        className={`w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr ${item.bg} ${item.border} ${item.glow} border backdrop-blur-md flex items-center justify-center shadow-lg transition-transform hover:scale-110 p-2 sm:p-2.5`}
+      <motion.div
+        initial={shouldReduceMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+        animate={
+          shouldReduceMotion
+            ? { opacity: 1, scale: 1, y: 0 }
+            : {
+                opacity: 1,
+                scale: 1,
+                y: activeFloatRange,
+              }
+        }
+        transition={
+          shouldReduceMotion
+            ? { duration: 0.4 }
+            : {
+                y: {
+                  repeat: Infinity,
+                  duration: item.duration,
+                  ease: 'easeInOut',
+                  delay: item.delay,
+                },
+                opacity: { duration: 0.5, delay: item.delay },
+                scale: { duration: 0.5, delay: item.delay },
+              }
+        }
       >
-        <IconComponent className={`w-full h-full ${item.color}`} />
-      </div>
-    </motion.div>
+        <div
+          className={`w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr ${item.bg} ${item.border} ${item.glow} border backdrop-blur-md flex items-center justify-center shadow-lg transition-transform hover:scale-105 p-2 sm:p-2.5`}
+        >
+          <IconComponent className={`w-full h-full ${item.color}`} />
+        </div>
+      </motion.div>
+    </div>
   );
 }

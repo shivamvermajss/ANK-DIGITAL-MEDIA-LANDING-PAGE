@@ -147,13 +147,10 @@ export function FinalCTA() {
               </div>
 
               {/* Main Headline */}
-              <h2 className="font-heading font-black text-3xl sm:text-5xl lg:text-6xl text-[#0F172A] tracking-[-0.03em] leading-[1.08] mb-5">
+              <h2 className="font-heading font-extrabold text-3xl sm:text-5xl lg:text-6xl text-[#0F172A] tracking-[-0.03em] leading-[1.12] sm:leading-[1.10] mb-5">
                 Have a{' '}
                 <span
-                  className="bg-clip-text text-transparent inline-block font-black"
-                  style={{
-                    backgroundImage: 'linear-gradient(90deg, #2563EB 0%, #6366F1 50%, #9333EA 100%)',
-                  }}
+                  className="bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 bg-clip-text text-transparent inline-block font-extrabold py-1 pb-2 -mb-2"
                 >
                   digital experience
                 </span>{' '}
@@ -205,7 +202,7 @@ export function FinalCTA() {
                   Core Practice Capabilities
                 </span>
                 <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5">
-                  {capabilities.map((cap, i) => (
+                  {capabilities.map((cap) => (
                     <span
                       key={cap}
                       className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50/90 border border-slate-200/80 text-slate-600 text-xs font-mono font-medium hover:bg-indigo-50/70 hover:border-indigo-200 hover:text-indigo-700 transition-all duration-200 cursor-default shadow-2xs"

@@ -34,36 +34,61 @@ const PIPELINE_NODES_LIST = [
 ];
 
 /**
- * MicroPreview: Renders authentic, concept-labeled visual micro-previews
- * Strictly avoids fake numerical claims (no fake LCP numbers, no fake 99.9% uptime).
+ * FeatureMicroPreview
+ * Sections 7, 8 & 10: Pure Light Frosted Glass Architecture & Concept Previews
+ * Strictly avoids dark slate/black panels, heavy contrast, or fake numerical claims.
  */
 function FeatureMicroPreview({ previewType }) {
   switch (previewType) {
     case 'architecture':
       return (
-        <div className="mt-3 p-3.5 rounded-xl bg-slate-900/90 text-white border border-slate-700/80 shadow-inner">
-          <div className="flex items-center justify-between gap-2 mb-2 pb-1.5 border-b border-slate-800">
-            <span className="inline-flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-wider text-blue-400">
-              <Layers className="w-3 h-3 text-blue-400" />
-              ARCHITECTURE PREVIEW
+        <div className="mt-3 p-3.5 rounded-2xl bg-white/90 backdrop-blur-xl border border-indigo-100 shadow-xl shadow-indigo-500/10 text-slate-800">
+          <div className="flex items-center justify-between gap-2 mb-2.5 pb-2 border-b border-indigo-50">
+            <span className="inline-flex items-center gap-1.5 text-[10px] font-mono font-bold tracking-wider text-indigo-600">
+              <Layers className="w-3.5 h-3.5 text-indigo-600" />
+              // ARCHITECTURE PREVIEW
             </span>
-            <span className="text-[9px] font-mono text-slate-400">Decoupled Modules</span>
+            <span className="inline-flex items-center gap-1.5 text-[9px] font-mono font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              ● ACTIVE MODULAR NODE
+            </span>
           </div>
 
-          {/* Isometric / Visual Node Tree */}
-          <div className="grid grid-cols-3 gap-1.5 text-center text-[10px] font-mono">
-            <div className="p-1.5 rounded-lg bg-slate-800 border border-slate-700 text-blue-300">
-              Core Engine
+          {/* Three Compact Feature Modules (Section 8) */}
+          <div className="grid grid-cols-3 gap-2 text-center font-mono">
+            {/* Core: bg-slate-50 border-slate-100 */}
+            <div className="p-2 rounded-xl bg-slate-50 border border-slate-100">
+              <span className="text-[9px] uppercase tracking-wider text-slate-400 font-bold block">
+                CORE
+              </span>
+              <span className="text-[11px] font-semibold text-slate-700 block mt-0.5">
+                Decoupled
+              </span>
             </div>
-            <div className="p-1.5 rounded-lg bg-indigo-900/50 border border-indigo-700 text-indigo-300">
-              API Bridge
+
+            {/* Bridge: bg-indigo-50 border-indigo-100 text-indigo-700 */}
+            <div className="p-2 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-700">
+              <span className="text-[9px] uppercase tracking-wider text-indigo-400 font-bold block">
+                BRIDGE
+              </span>
+              <span className="text-[11px] font-semibold text-indigo-700 block mt-0.5">
+                API Gateway
+              </span>
             </div>
-            <div className="p-1.5 rounded-lg bg-purple-900/50 border border-purple-700 text-purple-300">
-              UI System
+
+            {/* State: bg-slate-50 border-slate-100 */}
+            <div className="p-2 rounded-xl bg-slate-50 border border-slate-100">
+              <span className="text-[9px] uppercase tracking-wider text-slate-400 font-bold block">
+                STATE
+              </span>
+              <span className="text-[11px] font-semibold text-slate-700 block mt-0.5">
+                Zustand
+              </span>
             </div>
           </div>
-          <div className="mt-2 text-[10px] text-slate-400 font-mono text-center flex items-center justify-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+
+          <div className="mt-2.5 text-[10px] text-slate-500 font-mono text-center flex items-center justify-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
             <span>Independent lifecycle & zero-dependency coupling</span>
           </div>
         </div>
@@ -71,25 +96,28 @@ function FeatureMicroPreview({ previewType }) {
 
     case 'performance':
       return (
-        <div className="mt-3 p-3.5 rounded-xl bg-slate-900/90 text-white border border-slate-700/80 shadow-inner">
-          <div className="flex items-center justify-between gap-2 mb-2 pb-1.5 border-b border-slate-800">
-            <span className="inline-flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-wider text-indigo-400">
-              <Activity className="w-3 h-3 text-indigo-400" />
-              CONCEPT PREVIEW
+        <div className="mt-3 p-3.5 rounded-2xl bg-white/90 backdrop-blur-xl border border-indigo-100 shadow-xl shadow-indigo-500/10 text-slate-800">
+          <div className="flex items-center justify-between gap-2 mb-2.5 pb-2 border-b border-indigo-50">
+            <span className="inline-flex items-center gap-1.5 text-[10px] font-mono font-bold tracking-wider text-indigo-600">
+              <Activity className="w-3.5 h-3.5 text-indigo-600" />
+              // CONCEPT PREVIEW
             </span>
-            <span className="text-[9px] font-mono text-emerald-400">60 FPS Target</span>
+            <span className="inline-flex items-center gap-1.5 text-[9px] font-mono font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              60 FPS Target
+            </span>
           </div>
 
           {/* Smooth execution waveform */}
           <div className="space-y-1.5">
-            <div className="flex items-center justify-between text-[10px] font-mono text-slate-400">
+            <div className="flex items-center justify-between text-[10px] font-mono text-slate-500">
               <span>Frame Budget</span>
-              <span className="text-emerald-400">Fluid Execution</span>
+              <span className="text-emerald-600 font-semibold">Fluid Execution</span>
             </div>
-            <div className="h-2 w-full rounded-full bg-slate-800 overflow-hidden p-0.5">
+            <div className="h-2 w-full rounded-full bg-slate-100 overflow-hidden p-0.5 border border-slate-200/60">
               <div className="h-full w-4/5 rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-400" />
             </div>
-            <svg viewBox="0 0 200 24" className="w-full h-5 text-indigo-400 stroke-current fill-none">
+            <svg viewBox="0 0 200 24" className="w-full h-5 text-indigo-500 stroke-current fill-none">
               <path
                 d="M 0,16 Q 25,6 50,14 T 100,10 T 150,15 T 200,8"
                 strokeWidth="1.75"
@@ -103,34 +131,36 @@ function FeatureMicroPreview({ previewType }) {
     case 'design':
     case 'responsive':
       return (
-        <div className="mt-3 p-3.5 rounded-xl bg-slate-900/90 text-white border border-slate-700/80 shadow-inner">
-          <div className="flex items-center justify-between gap-2 mb-2 pb-1.5 border-b border-slate-800">
-            <span className="inline-flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-wider text-purple-400">
-              <Smartphone className="w-3 h-3 text-purple-400" />
-              LAYOUT PREVIEW
+        <div className="mt-3 p-3.5 rounded-2xl bg-white/90 backdrop-blur-xl border border-indigo-100 shadow-xl shadow-indigo-500/10 text-slate-800">
+          <div className="flex items-center justify-between gap-2 mb-2.5 pb-2 border-b border-indigo-50">
+            <span className="inline-flex items-center gap-1.5 text-[10px] font-mono font-bold tracking-wider text-purple-600">
+              <Smartphone className="w-3.5 h-3.5 text-purple-600" />
+              // LAYOUT PREVIEW
             </span>
-            <span className="text-[9px] font-mono text-slate-400">Adaptive Grid</span>
+            <span className="inline-flex items-center gap-1.5 text-[9px] font-mono font-semibold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200/60">
+              Adaptive Grid
+            </span>
           </div>
 
           {/* Responsive Viewport concept */}
           <div className="flex items-center justify-center gap-3 py-1">
-            <div className="w-14 h-9 rounded border border-purple-400/50 bg-purple-950/40 flex flex-col p-1 gap-0.5">
-              <div className="h-1 w-full bg-purple-400/40 rounded-2xs" />
+            <div className="w-14 h-9 rounded-lg border border-purple-200 bg-purple-50/60 flex flex-col p-1 gap-0.5 shadow-2xs">
+              <div className="h-1 w-full bg-purple-300 rounded-2xs" />
               <div className="grid grid-cols-2 gap-0.5 flex-1">
-                <div className="bg-purple-400/20 rounded-2xs" />
-                <div className="bg-purple-400/20 rounded-2xs" />
+                <div className="bg-purple-200/80 rounded-2xs" />
+                <div className="bg-purple-200/80 rounded-2xs" />
               </div>
             </div>
-            <div className="w-9 h-9 rounded border border-indigo-400/50 bg-indigo-950/40 flex flex-col p-1 gap-0.5">
-              <div className="h-1 w-full bg-indigo-400/40 rounded-2xs" />
-              <div className="h-3 w-full bg-indigo-400/20 rounded-2xs mt-auto" />
+            <div className="w-9 h-9 rounded-lg border border-indigo-200 bg-indigo-50/60 flex flex-col p-1 gap-0.5 shadow-2xs">
+              <div className="h-1 w-full bg-indigo-300 rounded-2xs" />
+              <div className="h-3 w-full bg-indigo-200/80 rounded-2xs mt-auto" />
             </div>
-            <div className="w-5 h-9 rounded border border-blue-400/50 bg-blue-950/40 flex flex-col p-0.5 gap-0.5">
-              <div className="h-1 w-full bg-blue-400/40 rounded-2xs" />
-              <div className="h-4 w-full bg-blue-400/20 rounded-2xs mt-auto" />
+            <div className="w-5 h-9 rounded-lg border border-blue-200 bg-blue-50/60 flex flex-col p-0.5 gap-0.5 shadow-2xs">
+              <div className="h-1 w-full bg-blue-300 rounded-2xs" />
+              <div className="h-4 w-full bg-blue-200/80 rounded-2xs mt-auto" />
             </div>
           </div>
-          <p className="text-[9px] font-mono text-slate-400 text-center mt-1">
+          <p className="text-[9px] font-mono text-slate-500 text-center mt-1.5">
             Seamless layout adaptation across Desktop, Tablet & Mobile
           </p>
         </div>
@@ -138,20 +168,22 @@ function FeatureMicroPreview({ previewType }) {
 
     default:
       return (
-        <div className="mt-3 p-3 rounded-xl bg-slate-900/90 text-white border border-slate-700/80 shadow-inner">
-          <div className="flex items-center justify-between gap-2 mb-1.5 pb-1 border-b border-slate-800">
-            <span className="inline-flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-wider text-blue-400">
-              <Cpu className="w-3 h-3 text-blue-400" />
-              PIPELINE WORKFLOW
+        <div className="mt-3 p-3.5 rounded-2xl bg-white/90 backdrop-blur-xl border border-indigo-100 shadow-xl shadow-indigo-500/10 text-slate-800">
+          <div className="flex items-center justify-between gap-2 mb-2 pb-1.5 border-b border-indigo-50">
+            <span className="inline-flex items-center gap-1.5 text-[10px] font-mono font-bold tracking-wider text-indigo-600">
+              <Cpu className="w-3.5 h-3.5 text-indigo-600" />
+              // PIPELINE WORKFLOW
             </span>
-            <span className="text-[9px] font-mono text-emerald-400">Continuous Integration</span>
+            <span className="inline-flex items-center gap-1.5 text-[9px] font-mono font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
+              Continuous Integration
+            </span>
           </div>
-          <div className="flex items-center justify-between text-[10px] font-mono text-slate-300 pt-1">
-            <span className="px-2 py-0.5 rounded bg-slate-800 border border-slate-700">Audit</span>
-            <span className="text-slate-500">→</span>
-            <span className="px-2 py-0.5 rounded bg-indigo-950/60 border border-indigo-700 text-indigo-300">Engine</span>
-            <span className="text-slate-500">→</span>
-            <span className="px-2 py-0.5 rounded bg-emerald-950/60 border border-emerald-700 text-emerald-300">Deploy</span>
+          <div className="flex items-center justify-between text-[10px] font-mono text-slate-600 pt-1">
+            <span className="px-2 py-1 rounded-lg bg-slate-50 border border-slate-200 font-semibold">Audit</span>
+            <span className="text-slate-400">→</span>
+            <span className="px-2 py-1 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-700 font-semibold">Engine</span>
+            <span className="text-slate-400">→</span>
+            <span className="px-2 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 font-semibold">Deploy</span>
           </div>
         </div>
       );
@@ -161,17 +193,28 @@ function FeatureMicroPreview({ previewType }) {
 /**
  * DevelopmentShowcase Component (01 / DEVELOP)
  * Features:
- * - Interactive left-side 3D product-architecture visual with 6 clickable capability nodes
+ * - Interactive left-side 3D product-architecture visual with 6 floating capability nodes
  * - Active illuminated connecting beams linking the active node to the right details card
- * - Premium sliding segmented control tabs with Framer Motion layoutId
- * - Glassmorphic right details card with dynamic node context
- * - Interactive micro-previews with zero fake claims
+ * - Premium sliding segmented control tabs with Framer Motion layoutId (Section 13)
+ * - Glassmorphic right details card with cursor-following border sheen (Section 12)
+ * - Smooth AnimatePresence accordion micro-previews in light frosted glass (Sections 7-10)
+ * - Subtle hover responsive rows with smooth cubic-bezier easing (Section 11)
  */
 export function DevelopmentShowcase() {
   const [activeMode, setActiveMode] = useState('web');
   const [activeNode, setActiveNode] = useState('development');
   const [activePillarHover, setActivePillarHover] = useState(0);
+  const [cardMousePos, setCardMousePos] = useState({ x: 0, y: 0 });
+  const [isCardHovered, setIsCardHovered] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+
+  const handleCardMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setCardMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
 
   const currentNodeData =
     DEVELOPMENT_PIPELINE_NODES[activeNode] || DEVELOPMENT_PIPELINE_NODES.development;
@@ -213,7 +256,7 @@ export function DevelopmentShowcase() {
           </h3>
         </div>
 
-        {/* Sliding Segmented Control Tabs using layoutId */}
+        {/* Sliding Segmented Control Tabs (Section 13: indigo -> violet gradient, layoutId) */}
         <div className="relative flex items-center gap-1 p-1 rounded-2xl bg-white/85 backdrop-blur-md border border-slate-200/90 shadow-2xs self-start md:self-end overflow-x-auto max-w-full">
           {PRODUCT_MODES.map((mode) => {
             const isActive = activeMode === mode.id;
@@ -222,18 +265,22 @@ export function DevelopmentShowcase() {
                 key={mode.id}
                 type="button"
                 onClick={() => setActiveMode(mode.id)}
-                className="relative px-3.5 sm:px-4 py-2 rounded-xl text-xs font-mono font-bold tracking-tight transition-colors duration-200 shrink-0 cursor-pointer select-none"
+                className={`relative px-3.5 sm:px-4 py-2 rounded-xl text-xs font-mono font-bold tracking-tight transition-all duration-200 shrink-0 cursor-pointer select-none ${
+                  isActive
+                    ? ''
+                    : 'hover:bg-indigo-50/70 text-slate-600 hover:text-indigo-900'
+                }`}
               >
                 {isActive && (
                   <motion.div
                     layoutId="activeProductModePill"
-                    className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 shadow-xs"
+                    className="absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-violet-600 shadow-sm"
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                   />
                 )}
                 <span
                   className={`relative z-10 transition-colors duration-150 ${
-                    isActive ? 'text-white' : 'text-slate-600 hover:text-slate-900'
+                    isActive ? 'text-white' : 'text-slate-600 hover:text-indigo-900'
                   }`}
                 >
                   {mode.label}
@@ -259,7 +306,7 @@ export function DevelopmentShowcase() {
               onClick={() => setActiveNode(node.id)}
               className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-bold shrink-0 transition-all cursor-pointer ${
                 isActive
-                  ? 'bg-blue-600 text-white shadow-xs'
+                  ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-xs'
                   : 'bg-white/80 border border-slate-200 text-slate-600 hover:bg-slate-50'
               }`}
             >
@@ -284,23 +331,36 @@ export function DevelopmentShowcase() {
 
         {/* ======================================================== */}
         {/* RIGHT: PRIMARY FEATURE SPOTLIGHT (~40%)                  */}
-        {/* Glassmorphic details card with dynamic pipeline state     */}
+        {/* Glassmorphic details card with cursor sheen (Section 12)  */}
         {/* ======================================================== */}
         <motion.div
           initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          onMouseMove={handleCardMouseMove}
+          onMouseEnter={() => setIsCardHovered(true)}
+          onMouseLeave={() => setIsCardHovered(false)}
           className="lg:col-span-5 xl:col-span-5 flex flex-col justify-between rounded-3xl relative overflow-hidden"
           style={{
-            background: 'rgba(255, 255, 255, 0.75)',
+            background: 'rgba(255, 255, 255, 0.82)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(99, 102, 241, 0.15)',
+            border: '1px solid rgba(99, 102, 241, 0.18)',
             boxShadow: '0 25px 50px -12px rgba(99, 102, 241, 0.12)',
             padding: '1.75rem',
           }}
         >
+          {/* Subtle cursor-following border & surface sheen (Section 12) */}
+          <div
+            className="pointer-events-none absolute inset-0 rounded-3xl transition-opacity duration-300 z-0"
+            style={{
+              opacity: isCardHovered && !shouldReduceMotion ? 1 : 0,
+              background: `radial-gradient(420px circle at ${cardMousePos.x}px ${cardMousePos.y}px, rgba(99, 102, 241, 0.09), transparent 70%)`,
+            }}
+            aria-hidden="true"
+          />
+
           {/* Subtle decorative glow ring */}
           <div
             className="absolute -top-16 -right-16 w-44 h-44 rounded-full bg-gradient-to-br from-blue-400/20 via-indigo-400/15 to-purple-400/20 blur-2xl pointer-events-none"
@@ -314,6 +374,7 @@ export function DevelopmentShowcase() {
               animate={{ opacity: 1, y: 0 }}
               exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -12 }}
               transition={{ duration: 0.25, ease: 'easeOut' }}
+              className="relative z-10"
             >
               {/* Category Tag & Pipeline Node Indicator */}
               <div className="flex items-center justify-between gap-3 mb-5">
@@ -321,7 +382,7 @@ export function DevelopmentShowcase() {
                   <Code2 className="w-6 h-6" />
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-blue-700 bg-blue-50/90 px-3 py-1 rounded-full border border-blue-200/80">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50/90 px-3 py-1 rounded-full border border-indigo-200/80">
                     {currentNodeData.badge}
                   </span>
                 </div>
@@ -335,7 +396,7 @@ export function DevelopmentShowcase() {
                 {currentNodeData.tagline}
               </p>
 
-              {/* Interactive Feature Checklist with Micro-Previews */}
+              {/* Interactive Feature Checklist with Micro-Previews (Sections 9, 10 & 11) */}
               <div className="space-y-3 pt-1 mb-6">
                 {currentNodeData.pillars.map((pillar, idx) => {
                   const isHoveredOrActive = activePillarHover === idx;
@@ -347,11 +408,14 @@ export function DevelopmentShowcase() {
                       tabIndex={0}
                       role="button"
                       aria-expanded={isHoveredOrActive}
-                      className={`p-3.5 rounded-2xl border transition-all duration-200 text-left outline-none cursor-pointer ${
+                      className={`p-3.5 rounded-2xl border transition-all duration-300 text-left outline-none cursor-pointer ${
                         isHoveredOrActive
-                          ? 'bg-white/95 border-indigo-300/80 shadow-[0_8px_20px_-6px_rgba(99,102,241,0.18)]'
-                          : 'bg-white/60 border-slate-200/80 hover:bg-white/80 hover:border-slate-300'
+                          ? 'bg-white/95 border-indigo-300 shadow-[0_8px_20px_-6px_rgba(99,102,241,0.18)] -translate-y-0.5'
+                          : 'bg-white/60 border-slate-200/80 hover:bg-white/90 hover:border-indigo-200 hover:-translate-y-0.5 hover:shadow-[0_8px_20px_-6px_rgba(99,102,241,0.12)]'
                       }`}
+                      style={{
+                        transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+                      }}
                     >
                       <div className="flex items-start gap-3">
                         <CheckCircle2
@@ -378,14 +442,17 @@ export function DevelopmentShowcase() {
                             {pillar.desc}
                           </span>
 
-                          {/* Expandable Micro-Preview Container */}
+                          {/* Accordion Animation with AnimatePresence (Section 9) */}
                           <AnimatePresence>
                             {isHoveredOrActive && (
                               <motion.div
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: 'auto' }}
-                                exit={{ opacity: 0, height: 0 }}
-                                transition={{ duration: 0.2 }}
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: 'auto', opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{
+                                  duration: 0.3,
+                                  ease: 'easeOut',
+                                }}
                                 className="overflow-hidden"
                               >
                                 <FeatureMicroPreview previewType={pillar.previewType} />
@@ -402,7 +469,7 @@ export function DevelopmentShowcase() {
           </AnimatePresence>
 
           {/* CTA Link to Contact / Work */}
-          <div className="pt-4 border-t border-slate-200/80 flex items-center justify-between gap-4">
+          <div className="pt-4 border-t border-slate-200/80 flex items-center justify-between gap-4 relative z-10">
             <a
               href="#contact"
               className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full text-sm font-bold text-white bg-cta-primary shadow-[0_10px_25px_-5px_rgba(59,130,246,0.35)] hover:shadow-[0_14px_30px_-5px_rgba(139,92,246,0.45)] transition-all select-none cursor-pointer"
@@ -423,4 +490,3 @@ export function DevelopmentShowcase() {
     </div>
   );
 }
-

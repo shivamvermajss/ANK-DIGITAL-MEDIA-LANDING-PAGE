@@ -136,12 +136,8 @@ export function Hero() {
             {/* 2. DISPLAY HEADLINE (Enlarged scale, tight leading) */}
             <div className="mb-4 sm:mb-5">
               <h1 className="font-heading font-black text-[2.25rem] sm:text-5xl md:text-6xl lg:text-[3.6rem] xl:text-[4.2rem] leading-[0.92] tracking-[-0.035em] text-[#0F172A]">
-                <motion.span variants={itemVariants} className="block relative">
+                <motion.span variants={itemVariants} className="block">
                   BUILD
-                  {/* Subtle purple accent slashes // from reference */}
-                  <span className="inline-block ml-3 text-purple-400 font-mono text-2xl sm:text-3xl font-light select-none">
-                    //
-                  </span>
                 </motion.span>
                 <motion.span variants={itemVariants} className="block mt-0.5 sm:mt-1 text-[#0F172A]">
                   DIGITAL
@@ -154,30 +150,10 @@ export function Hero() {
                 <motion.span variants={itemVariants} className="block mt-0.5 sm:mt-1 text-[#0F172A]">
                   THAT MOVE
                 </motion.span>
-                <motion.span variants={itemVariants} className="block mt-0.5 sm:mt-1 relative inline-block">
+                <motion.span variants={itemVariants} className="block mt-0.5 sm:mt-1">
                   <span className="bg-gradient-to-r from-sky-600 via-blue-500 to-cyan-400 bg-clip-text text-transparent inline-block">
                     BUSINESS.
                   </span>
-                  {/* Subtle purple sketched squiggle wave from reference */}
-                  <svg
-                    viewBox="0 0 100 20"
-                    className="absolute -bottom-2 -right-16 sm:-right-20 w-16 sm:w-22 text-purple-400/90 pointer-events-none"
-                    fill="none"
-                  >
-                    <path
-                      d="M 2,10 C 20,2 35,16 55,8 C 70,2 85,14 98,6"
-                      stroke="currentColor"
-                      strokeWidth="2.8"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M 65,14 C 76,8 88,16 97,11"
-                      stroke="currentColor"
-                      strokeWidth="1.8"
-                      strokeLinecap="round"
-                      opacity="0.7"
-                    />
-                  </svg>
                 </motion.span>
               </h1>
             </div>

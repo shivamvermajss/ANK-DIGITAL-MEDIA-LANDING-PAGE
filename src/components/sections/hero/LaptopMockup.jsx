@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { WorkspaceScreen } from './WorkspaceScreen';
 
 /**
@@ -7,7 +8,10 @@ import { WorkspaceScreen } from './WorkspaceScreen';
  * dark crystalline bedrock pedestal with electric cyan & violet neon ribbons.
  * Directly recreates the reference image perspective, materials, and lighting.
  */
-export function LaptopMockup() {
+export function LaptopMockup({ isHovered = false }) {
+  const shouldReduceMotion = useReducedMotion();
+  const particleDur = isHovered ? '1.8s' : '2.5s';
+  const rearDur = isHovered ? '2.8s' : '4.2s';
   return (
     <div className="relative flex flex-col items-center justify-center select-none pointer-events-none">
       
@@ -99,15 +103,53 @@ export function LaptopMockup() {
             stroke="url(#streamerVioletGrad)"
             strokeWidth="5.5"
             filter="url(#neonGlowBack)"
-            opacity="0.95"
+            opacity={isHovered ? 1 : 0.95}
+            className="transition-opacity duration-300"
           />
           <path
             d="M 140,80 Q 360,25 580,125 T 780,170"
             fill="none"
             stroke="#F5D0FE"
             strokeWidth="2"
-            opacity="0.9"
+            opacity={isHovered ? 1 : 0.9}
+            className="transition-opacity duration-300"
           />
+          {/* Traveling subtle data stream along the rear ribbon */}
+          <motion.path
+            d="M 140,80 Q 360,25 580,125 T 780,170"
+            fill="none"
+            stroke="#E9D5FF"
+            strokeWidth="2.8"
+            strokeDasharray="35 240"
+            animate={shouldReduceMotion ? {} : { strokeDashoffset: [275, 0] }}
+            transition={
+              shouldReduceMotion
+                ? {}
+                : { duration: isHovered ? 2.8 : 4.2, repeat: Infinity, ease: 'linear' }
+            }
+            opacity={isHovered ? 0.9 : 0.65}
+            filter="url(#neonGlowBack)"
+          />
+          {!shouldReduceMotion && (
+            <g>
+              <animateMotion
+                path="M 140,80 Q 360,25 580,125 T 780,170"
+                dur={rearDur}
+                repeatCount="indefinite"
+                begin="0s"
+              />
+              <animate
+                attributeName="opacity"
+                values="0; 0.85; 0.85; 0"
+                keyTimes="0; 0.15; 0.85; 1"
+                dur={rearDur}
+                repeatCount="indefinite"
+                begin="0s"
+              />
+              <circle r="2.8" fill="#FFFFFF" filter="url(#neonGlowBack)" />
+              <circle r="5" fill="none" stroke="#C084FC" strokeWidth="1.2" opacity="0.8" />
+            </g>
+          )}
         </svg>
       </div>
 
@@ -226,7 +268,8 @@ export function LaptopMockup() {
             stroke="url(#frontCyanGrad)"
             strokeWidth="6"
             filter="url(#frontNeonGlow)"
-            opacity="0.98"
+            opacity={isHovered ? 1.0 : 0.88}
+            className="transition-opacity duration-300"
           />
           {/* Razor-sharp White Core Light Filament */}
           <path
@@ -234,12 +277,86 @@ export function LaptopMockup() {
             fill="none"
             stroke="#FFFFFF"
             strokeWidth="2.2"
-            opacity="0.98"
+            opacity={isHovered ? 1.0 : 0.88}
+            className="transition-opacity duration-300"
           />
 
-          {/* Traveling Photon Energy Bead on the ribbon */}
-          <circle cx="310" cy="118" r="5" fill="#FFFFFF" filter="url(#frontNeonGlow)" />
-          <circle cx="310" cy="118" r="8.5" fill="none" stroke="#00F0FF" strokeWidth="2" opacity="0.9" />
+          {/* Traveling subtle data stream along the cyan beam */}
+          <motion.path
+            d="M 30,110 Q 220,145 400,95 T 700,35"
+            fill="none"
+            stroke="#E0F2FE"
+            strokeWidth="2.6"
+            strokeDasharray="40 220"
+            animate={shouldReduceMotion ? {} : { strokeDashoffset: [260, 0] }}
+            transition={
+              shouldReduceMotion
+                ? {}
+                : { duration: isHovered ? 1.8 : 2.5, repeat: Infinity, ease: 'linear' }
+            }
+            opacity={isHovered ? 0.95 : 0.7}
+            filter="url(#frontNeonGlow)"
+          />
+
+          {/* Multiple data particles traveling continuously along the cyan beam (Max 2 particles) */}
+          {shouldReduceMotion ? (
+            /* Static fallback when reduced motion is preferred */
+            <g>
+              <circle cx="310" cy="118" r="7" fill="#00F0FF" opacity="0.15" />
+              <circle cx="310" cy="118" r="2.5" fill="#38BDF8" opacity="1" />
+              <circle cx="310" cy="118" r="1.3" fill="#FFFFFF" opacity="1" />
+            </g>
+          ) : (
+            <>
+              {/* Particle 1: Lead photon - delay 0s */}
+              <g>
+                <animateMotion
+                  path="M 30,110 Q 220,145 400,95 T 700,35"
+                  dur={particleDur}
+                  repeatCount="indefinite"
+                  begin="0s"
+                />
+                <animate
+                  attributeName="opacity"
+                  values="0; 1; 1; 0"
+                  keyTimes="0; 0.08; 0.92; 1"
+                  dur={particleDur}
+                  repeatCount="indefinite"
+                  begin="0s"
+                />
+                {/* Soft cyan simulated glow (no expensive filter) */}
+                <circle r="7" fill="#00F0FF" opacity={isHovered ? 0.22 : 0.15} />
+                {/* Cyan/sky core */}
+                <circle r="2.5" fill="#38BDF8" opacity={1} />
+                {/* White pinpoint center */}
+                <circle r="1.2" fill="#FFFFFF" opacity="1" />
+              </g>
+
+              {/* Particle 2: Trailing photon - delay 1.25s */}
+              <g>
+                <animateMotion
+                  path="M 30,110 Q 220,145 400,95 T 700,35"
+                  dur={particleDur}
+                  repeatCount="indefinite"
+                  begin={isHovered ? '-0.9s' : '-1.25s'}
+                />
+                <animate
+                  attributeName="opacity"
+                  values="0; 0.95; 0.95; 0"
+                  keyTimes="0; 0.08; 0.92; 1"
+                  dur={particleDur}
+                  repeatCount="indefinite"
+                  begin={isHovered ? '-0.9s' : '-1.25s'}
+                />
+                {/* Soft cyan simulated glow */}
+                <circle r="7" fill="#38BDF8" opacity={isHovered ? 0.20 : 0.14} />
+                {/* Sky blue / indigo blend core */}
+                <circle r="2.5" fill="#00F0FF" opacity={1} />
+                {/* White pinpoint center */}
+                <circle r="1.2" fill="#FFFFFF" opacity="1" />
+              </g>
+            </>
+          )}
         </svg>
       </div>
     </div>
