@@ -1,0 +1,295 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Core Brand Tokens - Light Agency Theme */
+  --color-brand-dark: #0F172A;
+  --color-brand-secondary: #475569;
+  --color-brand-surface: #FFFFFF;
+  --color-brand-light: #F8FAFF;
+  --color-brand-white: #FFFFFF;
+  --color-soft-violet: #EDE9FE;
+  --color-soft-blue: #DBEAFE;
+
+  /* Gradient Palette */
+  --color-brand-blue: #3B82F6;
+  --color-brand-indigo: #6366F1;
+  --color-brand-purple: #8B5CF6;
+  --color-brand-cyan: #06B6D4;
+
+  /* Atmospheric Tones */
+  --color-soft-slate: #CBD5E1;
+  --color-icy-blue: #BFDBFE;
+  --color-light-indigo: #C7D2FE;
+  --color-pastel-purple: #DDD6FE;
+
+  /* Typography */
+  --font-heading: 'Plus Jakarta Sans', 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-body);
+  }
+
+  body {
+    background-color: var(--color-brand-light);
+    color: var(--color-brand-dark);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.03em;
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@layer components {
+  /* Premium Light Glassmorphism */
+  .glass-light-surface {
+    background: rgba(255, 255, 255, 0.76);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.03);
+  }
+
+  .glass-floating-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 14px 35px rgba(15, 23, 42, 0.07), -3px -3px 10px rgba(255, 255, 255, 0.9);
+  }
+
+  .glass-panel-light {
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.75);
+  }
+
+  /* Electric Blue → Indigo → Purple Dynamic Text Gradient */
+  .text-gradient-electric {
+    background: linear-gradient(135deg, #3B82F6 0%, #6366F1 50%, #8B5CF6 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientShift 8s ease-in-out infinite;
+  }
+
+  /* CTA Primary Gradient */
+  .bg-cta-primary {
+    background: linear-gradient(135deg, #3B82F6 0%, #6366F1 50%, #8B5CF6 100%);
+  }
+
+  /* Subtle Neumorphism in Light Mode */
+  .neu-flat {
+    box-shadow: 6px 6px 14px #e5e8ee, -6px -6px 14px #ffffff;
+  }
+
+  .neu-pressed {
+    box-shadow: inset 3px 3px 6px #e5e8ee, inset -3px -3px 6px #ffffff;
+  }
+
+  /* Atmospheric Dot Mesh */
+  .bg-light-mesh {
+    background-image: radial-gradient(rgba(148, 163, 184, 0.15) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  /* Infinite Smooth Marquee */
+  .animate-marquee-infinite {
+    display: flex;
+    width: max-content;
+    animation: marquee 28s linear infinite;
+  }
+
+  /* ========================================================
+     Service Capability Cards - Premium Surface Activation System
+     Palette: #3B82F6 -> #6366F1 -> #8B5CF6 (Blue -> Indigo -> Purple)
+     ======================================================== */
+  .service-capability-card {
+    position: relative;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
+    transition: box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 300ms cubic-bezier(0.16, 1, 0.3, 1),
+                transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .service-card-gradient {
+    background:
+      radial-gradient(circle at 15% 10%, rgba(255, 255, 255, 0.20) 0%, transparent 38%),
+      linear-gradient(135deg, #3B82F6 0%, #6366F1 52%, #8B5CF6 100%);
+    opacity: 0;
+    transition: opacity 300ms ease-out;
+  }
+
+  .service-card-icon {
+    transition: background-color 300ms ease-out,
+                border-color 300ms ease-out,
+                color 300ms ease-out;
+  }
+
+  .service-card-tag {
+    transition: background-color 300ms ease-out,
+                border-color 300ms ease-out,
+                color 300ms ease-out;
+  }
+
+  .service-card-title {
+    transition: color 300ms ease-out;
+  }
+
+  .service-card-desc {
+    transition: color 300ms ease-out;
+  }
+
+  .service-card-link {
+    transition: color 300ms ease-out,
+                border-color 300ms ease-out;
+  }
+
+  .service-card-arrow {
+    transition: color 300ms ease-out,
+                transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @media (hover: hover) {
+    .service-capability-card:hover {
+      box-shadow: 0 12px 30px rgba(79, 70, 229, 0.10);
+      border-color: rgba(255, 255, 255, 0.45);
+    }
+
+    .service-capability-card:hover .service-card-gradient {
+      opacity: 1;
+    }
+
+    .service-capability-card:hover .service-card-icon {
+      background-color: rgba(255, 255, 255, 0.20);
+      border-color: rgba(255, 255, 255, 0.35);
+      color: #FFFFFF;
+    }
+
+    .service-capability-card:hover .service-card-icon svg {
+      color: #FFFFFF;
+      stroke: #FFFFFF;
+    }
+
+    .service-capability-card:hover .service-card-tag {
+      background-color: rgba(255, 255, 255, 0.20);
+      border-color: rgba(255, 255, 255, 0.30);
+      color: #FFFFFF;
+    }
+
+    .service-capability-card:hover .service-card-title {
+      color: #FFFFFF;
+    }
+
+    .service-capability-card:hover .service-card-desc {
+      color: rgba(255, 255, 255, 0.90);
+    }
+
+    .service-capability-card:hover .service-card-link {
+      color: #FFFFFF;
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+
+    .service-capability-card:hover .service-card-arrow {
+      color: #FFFFFF;
+      transform: translateX(2px);
+    }
+  }
+
+  /* Accessible Keyboard Navigation via :focus-within */
+  .service-capability-card:focus-within {
+    box-shadow: 0 12px 30px rgba(79, 70, 229, 0.10);
+    border-color: rgba(255, 255, 255, 0.45);
+  }
+
+  .service-capability-card:focus-within .service-card-gradient {
+    opacity: 1;
+  }
+
+  .service-capability-card:focus-within .service-card-icon {
+    background-color: rgba(255, 255, 255, 0.20);
+    border-color: rgba(255, 255, 255, 0.35);
+    color: #FFFFFF;
+  }
+
+  .service-capability-card:focus-within .service-card-icon svg {
+    color: #FFFFFF;
+    stroke: #FFFFFF;
+  }
+
+  .service-capability-card:focus-within .service-card-tag {
+    background-color: rgba(255, 255, 255, 0.20);
+    border-color: rgba(255, 255, 255, 0.30);
+    color: #FFFFFF;
+  }
+
+  .service-capability-card:focus-within .service-card-title {
+    color: #FFFFFF;
+  }
+
+  .service-capability-card:focus-within .service-card-desc {
+    color: rgba(255, 255, 255, 0.90);
+  }
+
+  .service-capability-card:focus-within .service-card-link {
+    color: #FFFFFF;
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+
+  .service-capability-card:focus-within .service-card-arrow {
+    color: #FFFFFF;
+    transform: translateX(2px);
+  }
+}
+
+/* Reduced Motion Preference Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .text-gradient-electric {
+    animation: none !important;
+    background-position: 50% 50% !important;
+  }
+  .animate-marquee-infinite {
+    animation: none !important;
+  }
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
