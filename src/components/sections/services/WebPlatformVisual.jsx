@@ -3,14 +3,12 @@ import { useReducedMotion } from 'framer-motion';
 import {
   Activity,
   Cpu,
-  Globe,
   Database,
   Sparkles,
   Layers,
   Users,
-  CheckCircle2,
 } from 'lucide-react';
-import { CardHoverContext } from './DevelopmentCapabilities';
+import { CardHoverContext } from './CardHoverContext';
 
 /**
  * WebPlatformVisual Component

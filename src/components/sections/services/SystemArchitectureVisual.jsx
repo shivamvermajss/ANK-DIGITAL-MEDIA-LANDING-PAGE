@@ -9,7 +9,7 @@ import {
   Globe,
   Database,
 } from 'lucide-react';
-import { CardHoverContext } from './DevelopmentCapabilities';
+import { CardHoverContext } from './CardHoverContext';
 
 /**
  * SystemArchitectureVisual Component

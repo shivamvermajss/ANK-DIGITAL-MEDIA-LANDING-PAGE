@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Server, Globe } from 'lucide-react';
 import { InfrastructureBadge } from './InfrastructureBadge';
@@ -18,10 +18,12 @@ import { DomainInfrastructureVisual } from './DomainInfrastructureVisual';
  * - Strictly avoids fake metrics and unverified vendor claims
  * - Respects prefers-reduced-motion
  */
-export function InfrastructureCard({ service, index = 0 }) {
+export const InfrastructureCard = React.memo(function InfrastructureCard({ service, index = 0 }) {
   const shouldReduceMotion = useReducedMotion();
   const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef(null);
+  const rectRef = useRef(null);
+  const rafRef = useRef(null);
 
   const isHosting = service.id === 'web-hosting';
 
@@ -59,14 +61,49 @@ export function InfrastructureCard({ service, index = 0 }) {
         ctaBorderHover: 'rgba(99, 102, 241, 0.35)',
       };
 
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    if (cardRef.current) {
+      rectRef.current = cardRef.current.getBoundingClientRect();
+    }
+  };
+
   const handleMouseMove = (e) => {
     if (shouldReduceMotion || !cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    cardRef.current.style.setProperty('--mouse-x', `${x}px`);
-    cardRef.current.style.setProperty('--mouse-y', `${y}px`);
+    const clientX = e.clientX;
+    const clientY = e.clientY;
+    if (rafRef.current) return;
+
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = null;
+      if (!cardRef.current) return;
+      if (!rectRef.current) {
+        rectRef.current = cardRef.current.getBoundingClientRect();
+      }
+      const rect = rectRef.current;
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+      cardRef.current.style.setProperty('--mouse-x', `${x}px`);
+      cardRef.current.style.setProperty('--mouse-y', `${y}px`);
+    });
   };
+
+  const handleMouseLeave = () => {
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+    rectRef.current = null;
+    setIsHovered(false);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    };
+  }, []);
 
   return (
     <motion.div
@@ -80,8 +117,8 @@ export function InfrastructureCard({ service, index = 0 }) {
         ease: [0.16, 1, 0.3, 1],
       }}
       whileHover={shouldReduceMotion ? {} : { y: -4, scale: 1.005 }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       onMouseMove={handleMouseMove}
       className="relative p-6 sm:p-7 lg:p-8 rounded-3xl transition-all duration-300 flex flex-col justify-between group overflow-hidden h-full"
       style={{
@@ -207,4 +244,4 @@ export function InfrastructureCard({ service, index = 0 }) {
       </div>
     </motion.div>
   );
-}
+});

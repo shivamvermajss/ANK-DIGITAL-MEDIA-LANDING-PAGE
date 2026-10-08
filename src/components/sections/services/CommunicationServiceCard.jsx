@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { ServiceIcon } from './ServiceIcon';
@@ -117,25 +117,62 @@ const ACCENT_STYLES = {
  * - CTA arrow animation: translateX(8px)
  * - Retains subtle SVG waveform for voice services
  */
-export function CommunicationServiceCard({ service, index = 0 }) {
+export const CommunicationServiceCard = React.memo(function CommunicationServiceCard({ service, index = 0 }) {
   const shouldReduceMotion = useReducedMotion();
   const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef(null);
+  const rectRef = useRef(null);
+  const rafRef = useRef(null);
 
   const accentKey = service.accent || 'blue';
   const style = ACCENT_STYLES[accentKey] || ACCENT_STYLES.blue;
 
+  const handleMouseEnter = useCallback(() => {
+    setIsHovered(true);
+    if (cardRef.current) {
+      rectRef.current = cardRef.current.getBoundingClientRect();
+    }
+  }, []);
+
   const handleMouseMove = useCallback(
     (e) => {
       if (shouldReduceMotion || !cardRef.current) return;
-      const rect = cardRef.current.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      cardRef.current.style.setProperty('--mouse-x', `${x}px`);
-      cardRef.current.style.setProperty('--mouse-y', `${y}px`);
+      const clientX = e.clientX;
+      const clientY = e.clientY;
+      if (rafRef.current) return;
+
+      rafRef.current = requestAnimationFrame(() => {
+        rafRef.current = null;
+        if (!cardRef.current) return;
+        if (!rectRef.current) {
+          rectRef.current = cardRef.current.getBoundingClientRect();
+        }
+        const rect = rectRef.current;
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
+        cardRef.current.style.setProperty('--mouse-x', `${x}px`);
+        cardRef.current.style.setProperty('--mouse-y', `${y}px`);
+      });
     },
     [shouldReduceMotion]
   );
+
+  const handleMouseLeave = useCallback(() => {
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+    rectRef.current = null;
+    setIsHovered(false);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    };
+  }, []);
 
   return (
     <motion.div
@@ -156,8 +193,8 @@ export function CommunicationServiceCard({ service, index = 0 }) {
               transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
             }
       }
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       onMouseMove={handleMouseMove}
       className="relative p-5 sm:p-6 rounded-2xl transition-all duration-300 flex flex-col justify-between group overflow-hidden h-full select-none"
       style={{
@@ -287,4 +324,4 @@ export function CommunicationServiceCard({ service, index = 0 }) {
       </div>
     </motion.div>
   );
-}
+});

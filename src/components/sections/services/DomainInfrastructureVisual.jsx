@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Globe, Search, Check, Shield, Network } from 'lucide-react';
+import { Search, Check, Shield, Network } from 'lucide-react';
 
 /**
  * DomainInfrastructureVisual Component

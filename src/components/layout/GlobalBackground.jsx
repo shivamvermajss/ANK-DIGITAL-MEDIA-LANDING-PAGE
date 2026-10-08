@@ -9,7 +9,7 @@ import React from 'react';
  * - Barely-there technical dot matrix (opacity 0.04-0.06)
  * - High-contrast preservation for all text and frosted glass cards
  */
-export function GlobalBackground() {
+export const GlobalBackground = React.memo(function GlobalBackground() {
   return (
     <div
       aria-hidden="true"
@@ -106,4 +106,4 @@ export function GlobalBackground() {
       />
     </div>
   );
-}
+});

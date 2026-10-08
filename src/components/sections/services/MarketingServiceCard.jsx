@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { ServiceIcon } from './ServiceIcon';
@@ -72,32 +72,61 @@ const SERVICE_ACCENT_MAP = {
  * - Interactive capability pills with brand accents & icons
  * - Coordinated CTA arrow translate (+8px) and text color shift
  */
-export function MarketingServiceCard({ service, index = 0 }) {
+export const MarketingServiceCard = React.memo(function MarketingServiceCard({ service, index = 0 }) {
   const cardRef = useRef(null);
+  const rectRef = useRef(null);
+  const rafRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
   const shouldReduceMotion = useReducedMotion();
 
   const accentName = SERVICE_ACCENT_MAP[service.id] || 'indigo';
   const style = MARKETING_ACCENT_STYLES[accentName] || MARKETING_ACCENT_STYLES.indigo;
 
+  const handleMouseEnter = useCallback(() => {
+    setIsHovered(true);
+    if (cardRef.current) {
+      rectRef.current = cardRef.current.getBoundingClientRect();
+    }
+  }, []);
+
   const handleMouseMove = useCallback(
     (e) => {
       if (shouldReduceMotion || !cardRef.current) return;
-      const rect = cardRef.current.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      cardRef.current.style.setProperty('--mouse-x', `${x}px`);
-      cardRef.current.style.setProperty('--mouse-y', `${y}px`);
+      const clientX = e.clientX;
+      const clientY = e.clientY;
+      if (rafRef.current) return;
+
+      rafRef.current = requestAnimationFrame(() => {
+        rafRef.current = null;
+        if (!cardRef.current) return;
+        if (!rectRef.current) {
+          rectRef.current = cardRef.current.getBoundingClientRect();
+        }
+        const rect = rectRef.current;
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
+        cardRef.current.style.setProperty('--mouse-x', `${x}px`);
+        cardRef.current.style.setProperty('--mouse-y', `${y}px`);
+      });
     },
     [shouldReduceMotion]
   );
 
-  const handleMouseEnter = useCallback(() => {
-    setIsHovered(true);
+  const handleMouseLeave = useCallback(() => {
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+    rectRef.current = null;
+    setIsHovered(false);
   }, []);
 
-  const handleMouseLeave = useCallback(() => {
-    setIsHovered(false);
+  useEffect(() => {
+    return () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    };
   }, []);
 
   return (
@@ -223,4 +252,4 @@ export function MarketingServiceCard({ service, index = 0 }) {
       </div>
     </motion.div>
   );
-}
+});

@@ -16,11 +16,10 @@ const CORE_TECHNOLOGIES = [
   'AND MORE',
 ];
 
-export function TechMarquee() {
-  const shouldReduceMotion = useReducedMotion();
+const MARQUEE_ITEMS = [...CORE_TECHNOLOGIES, ...CORE_TECHNOLOGIES, ...CORE_TECHNOLOGIES];
 
-  // Duplicate items for infinite seamless scroll
-  const marqueeItems = [...CORE_TECHNOLOGIES, ...CORE_TECHNOLOGIES, ...CORE_TECHNOLOGIES];
+export const TechMarquee = React.memo(function TechMarquee() {
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <div
@@ -50,7 +49,7 @@ export function TechMarquee() {
         </div>
       ) : (
         <div className="flex w-max animate-marquee-infinite">
-          {marqueeItems.map((tech, idx) => (
+          {MARQUEE_ITEMS.map((tech, idx) => (
             <div key={idx} className="flex items-center gap-6 sm:gap-9 mx-3 sm:mx-4.5">
               <span className="text-xs sm:text-sm font-mono tracking-[0.22em] text-slate-500 uppercase font-semibold hover:text-slate-800 transition-colors">
                 {tech}
@@ -64,4 +63,4 @@ export function TechMarquee() {
       )}
     </div>
   );
-}
+});

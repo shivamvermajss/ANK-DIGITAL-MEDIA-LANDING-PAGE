@@ -23,7 +23,7 @@ const CARD_ICONS = {
  * Frosted glass cards matching the exact design, typography, and accessories
  * of the reference image.
  */
-export function FloatingCapabilityCard({ card, isMobile }) {
+export const FloatingCapabilityCard = React.memo(function FloatingCapabilityCard({ card, isMobile }) {
   const shouldReduceMotion = useReducedMotion();
   const IconComponent = CARD_ICONS[card.icon] || Zap;
 
@@ -144,6 +144,6 @@ export function FloatingCapabilityCard({ card, isMobile }) {
         )}
       </motion.div>
     </motion.div>
-  </div>
+    </div>
   );
-}
+});

@@ -30,7 +30,7 @@ export function HeroDigitalWorkspace() {
       );
     };
     checkMobile();
-    window.addEventListener('resize', checkMobile);
+    window.addEventListener('resize', checkMobile, { passive: true });
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
@@ -44,38 +44,61 @@ export function HeroDigitalWorkspace() {
   const smoothY = useSpring(mouseY, springConfig);
 
   // Map cursor movement to perspective rotation (Sections 9 & 11):
-  // cursor left -> rotates slightly left (rotateY -5deg)
-  // cursor right -> rotates slightly right (rotateY +5deg)
-  // cursor top -> tilts slightly backward (rotateX +4deg)
-  // cursor bottom -> tilts slightly forward (rotateX -4deg)
-  // Clamped firmly to recommended maximums: rotateX ±4deg, rotateY ±5deg
   const rotateX = useTransform(smoothY, [-0.5, 0.5], [4, -4]);
   const rotateY = useTransform(smoothX, [-0.5, 0.5], [-5, 5]);
 
-  const handleMouseMove = (e) => {
-    if (shouldReduceMotion || isMobile || !containerRef.current) return;
-    if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) return;
-
-    const rect = containerRef.current.getBoundingClientRect();
-    if (!rect.width || !rect.height) return;
-
-    const rawX = (e.clientX - rect.left) / rect.width - 0.5;
-    const rawY = (e.clientY - rect.top) / rect.height - 0.5;
-    const clampedX = Math.max(-0.5, Math.min(0.5, rawX));
-    const clampedY = Math.max(-0.5, Math.min(0.5, rawY));
-    mouseX.set(clampedX);
-    mouseY.set(clampedY);
-  };
+  const rectRef = useRef(null);
+  const rafRef = useRef(null);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
+    if (containerRef.current) {
+      rectRef.current = containerRef.current.getBoundingClientRect();
+    }
+  };
+
+  const handleMouseMove = (e) => {
+    if (shouldReduceMotion || isMobile || !containerRef.current) return;
+    const clientX = e.clientX;
+    const clientY = e.clientY;
+    if (rafRef.current) return;
+
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = null;
+      if (!containerRef.current) return;
+      if (!rectRef.current) {
+        rectRef.current = containerRef.current.getBoundingClientRect();
+      }
+      const rect = rectRef.current;
+      if (!rect.width || !rect.height) return;
+
+      const rawX = (clientX - rect.left) / rect.width - 0.5;
+      const rawY = (clientY - rect.top) / rect.height - 0.5;
+      const clampedX = Math.max(-0.5, Math.min(0.5, rawX));
+      const clampedY = Math.max(-0.5, Math.min(0.5, rawY));
+      mouseX.set(clampedX);
+      mouseY.set(clampedY);
+    });
   };
 
   const handleMouseLeave = () => {
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+    rectRef.current = null;
     setIsHovered(false);
     mouseX.set(0);
     mouseY.set(0);
   };
+
+  useEffect(() => {
+    return () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    };
+  }, []);
 
   const tiltStyle =
     shouldReduceMotion || isMobile

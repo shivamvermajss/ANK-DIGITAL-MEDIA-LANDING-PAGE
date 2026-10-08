@@ -6,7 +6,7 @@ import { Sparkles, ArrowRight, MessageCircle } from 'lucide-react';
  * FinalCTA Component
  * 
  * Standalone premium 2026 agency conversion section.
- * Positioned between Technologies and Contact.
+ * Positioned between Services and Contact.
  * Features:
  * - Subtle ambient light environment with soft indigo/purple orbs
  * - Animated slow gradient border (indigo -> blue -> purple -> cyan)

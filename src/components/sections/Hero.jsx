@@ -9,29 +9,35 @@ import { HeroDigitalWorkspace } from './hero/HeroDigitalWorkspace';
 export function Hero() {
   const shouldReduceMotion = useReducedMotion();
 
-  // Controlled stagger sequence for editorial entrance
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: shouldReduceMotion ? 0 : 0.08,
-        delayChildren: shouldReduceMotion ? 0 : 0.04,
+  // Controlled stagger sequence for editorial entrance (memoized)
+  const containerVariants = React.useMemo(
+    () => ({
+      hidden: { opacity: 0 },
+      visible: {
+        opacity: 1,
+        transition: {
+          staggerChildren: shouldReduceMotion ? 0 : 0.08,
+          delayChildren: shouldReduceMotion ? 0 : 0.04,
+        },
       },
-    },
-  };
+    }),
+    [shouldReduceMotion]
+  );
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 16 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: [0.16, 1, 0.3, 1],
+  const itemVariants = React.useMemo(
+    () => ({
+      hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 16 },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+          duration: 0.5,
+          ease: [0.16, 1, 0.3, 1],
+        },
       },
-    },
-  };
+    }),
+    [shouldReduceMotion]
+  );
 
   return (
     <section

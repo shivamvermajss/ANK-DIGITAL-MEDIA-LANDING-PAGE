@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 
-export function HeroBadge() {
+export const HeroBadge = React.memo(function HeroBadge() {
   const shouldReduceMotion = useReducedMotion();
 
   return (
@@ -20,4 +20,4 @@ export function HeroBadge() {
       </span>
     </motion.div>
   );
-}
+});

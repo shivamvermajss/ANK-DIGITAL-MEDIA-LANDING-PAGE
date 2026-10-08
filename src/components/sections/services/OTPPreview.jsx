@@ -17,10 +17,7 @@ export function OTPPreview({ isHovered = false }) {
 
   // Subtle sequential passcode animation: 0 -> 1 -> 2 -> 3 -> 4, pause, loop
   useEffect(() => {
-    if (shouldReduceMotion) {
-      setFilledCount(4);
-      return;
-    }
+    if (shouldReduceMotion) return;
 
     let timeoutId;
     let isCancelled = false;

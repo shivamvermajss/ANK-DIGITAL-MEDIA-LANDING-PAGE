@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { ServiceIcon } from './ServiceIcon';
@@ -20,10 +20,12 @@ import { OTPPreview } from './OTPPreview';
  * - CTA arrow animation: translateX(8px)
  * - Preserves internal WhatsApp chat & OTP verification animations completely intact
  */
-export function CommunicationFeaturedCard({ service, previewType = 'whatsapp' }) {
+export const CommunicationFeaturedCard = React.memo(function CommunicationFeaturedCard({ service, previewType = 'whatsapp' }) {
   const shouldReduceMotion = useReducedMotion();
   const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef(null);
+  const rectRef = useRef(null);
+  const rafRef = useRef(null);
 
   const isWhatsApp = previewType === 'whatsapp';
 
@@ -65,17 +67,52 @@ export function CommunicationFeaturedCard({ service, previewType = 'whatsapp' })
         accentName: 'indigo',
       };
 
+  const handleMouseEnter = useCallback(() => {
+    setIsHovered(true);
+    if (cardRef.current) {
+      rectRef.current = cardRef.current.getBoundingClientRect();
+    }
+  }, []);
+
   const handleMouseMove = useCallback(
     (e) => {
       if (shouldReduceMotion || !cardRef.current) return;
-      const rect = cardRef.current.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      cardRef.current.style.setProperty('--mouse-x', `${x}px`);
-      cardRef.current.style.setProperty('--mouse-y', `${y}px`);
+      const clientX = e.clientX;
+      const clientY = e.clientY;
+      if (rafRef.current) return;
+
+      rafRef.current = requestAnimationFrame(() => {
+        rafRef.current = null;
+        if (!cardRef.current) return;
+        if (!rectRef.current) {
+          rectRef.current = cardRef.current.getBoundingClientRect();
+        }
+        const rect = rectRef.current;
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
+        cardRef.current.style.setProperty('--mouse-x', `${x}px`);
+        cardRef.current.style.setProperty('--mouse-y', `${y}px`);
+      });
     },
     [shouldReduceMotion]
   );
+
+  const handleMouseLeave = useCallback(() => {
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+    rectRef.current = null;
+    setIsHovered(false);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    };
+  }, []);
 
   return (
     <motion.div
@@ -92,8 +129,8 @@ export function CommunicationFeaturedCard({ service, previewType = 'whatsapp' })
               transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
             }
       }
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       onMouseMove={handleMouseMove}
       className="relative p-6 sm:p-7 lg:p-8 rounded-3xl transition-all duration-300 flex flex-col justify-between group overflow-hidden h-full select-none"
       style={{
@@ -231,4 +268,4 @@ export function CommunicationFeaturedCard({ service, previewType = 'whatsapp' })
       </div>
     </motion.div>
   );
-}
+});

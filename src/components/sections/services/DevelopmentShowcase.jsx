@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import {
   ArrowRight,
@@ -204,17 +204,56 @@ export function DevelopmentShowcase() {
   const [activeMode, setActiveMode] = useState('web');
   const [activeNode, setActiveNode] = useState('development');
   const [activePillarHover, setActivePillarHover] = useState(0);
-  const [cardMousePos, setCardMousePos] = useState({ x: 0, y: 0 });
   const [isCardHovered, setIsCardHovered] = useState(false);
   const shouldReduceMotion = useReducedMotion();
 
+  const showcaseCardRef = useRef(null);
+  const cardRectRef = useRef(null);
+  const cardRafRef = useRef(null);
+
+  const handleCardMouseEnter = () => {
+    setIsCardHovered(true);
+    if (showcaseCardRef.current) {
+      cardRectRef.current = showcaseCardRef.current.getBoundingClientRect();
+    }
+  };
+
   const handleCardMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setCardMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
+    if (shouldReduceMotion || !showcaseCardRef.current) return;
+    const clientX = e.clientX;
+    const clientY = e.clientY;
+    if (cardRafRef.current) return;
+
+    cardRafRef.current = requestAnimationFrame(() => {
+      cardRafRef.current = null;
+      if (!showcaseCardRef.current) return;
+      if (!cardRectRef.current) {
+        cardRectRef.current = showcaseCardRef.current.getBoundingClientRect();
+      }
+      const rect = cardRectRef.current;
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+      showcaseCardRef.current.style.setProperty('--card-mouse-x', `${x}px`);
+      showcaseCardRef.current.style.setProperty('--card-mouse-y', `${y}px`);
     });
   };
+
+  const handleCardMouseLeave = () => {
+    if (cardRafRef.current) {
+      cancelAnimationFrame(cardRafRef.current);
+      cardRafRef.current = null;
+    }
+    cardRectRef.current = null;
+    setIsCardHovered(false);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (cardRafRef.current) {
+        cancelAnimationFrame(cardRafRef.current);
+      }
+    };
+  }, []);
 
   const currentNodeData =
     DEVELOPMENT_PIPELINE_NODES[activeNode] || DEVELOPMENT_PIPELINE_NODES.development;
@@ -334,13 +373,14 @@ export function DevelopmentShowcase() {
         {/* Glassmorphic details card with cursor sheen (Section 12)  */}
         {/* ======================================================== */}
         <motion.div
+          ref={showcaseCardRef}
           initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           onMouseMove={handleCardMouseMove}
-          onMouseEnter={() => setIsCardHovered(true)}
-          onMouseLeave={() => setIsCardHovered(false)}
+          onMouseEnter={handleCardMouseEnter}
+          onMouseLeave={handleCardMouseLeave}
           className="lg:col-span-5 xl:col-span-5 flex flex-col justify-between rounded-3xl relative overflow-hidden"
           style={{
             background: 'rgba(255, 255, 255, 0.82)',
@@ -356,7 +396,7 @@ export function DevelopmentShowcase() {
             className="pointer-events-none absolute inset-0 rounded-3xl transition-opacity duration-300 z-0"
             style={{
               opacity: isCardHovered && !shouldReduceMotion ? 1 : 0,
-              background: `radial-gradient(420px circle at ${cardMousePos.x}px ${cardMousePos.y}px, rgba(99, 102, 241, 0.09), transparent 70%)`,
+              background: 'radial-gradient(420px circle at var(--card-mouse-x, -500px) var(--card-mouse-y, -500px), rgba(99, 102, 241, 0.09), transparent 70%)',
             }}
             aria-hidden="true"
           />

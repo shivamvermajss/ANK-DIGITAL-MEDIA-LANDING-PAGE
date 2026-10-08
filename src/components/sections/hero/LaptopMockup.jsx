@@ -8,7 +8,7 @@ import { WorkspaceScreen } from './WorkspaceScreen';
  * dark crystalline bedrock pedestal with electric cyan & violet neon ribbons.
  * Directly recreates the reference image perspective, materials, and lighting.
  */
-export function LaptopMockup({ isHovered = false }) {
+export const LaptopMockup = React.memo(function LaptopMockup({ isHovered = false }) {
   const shouldReduceMotion = useReducedMotion();
   const particleDur = isHovered ? '1.8s' : '2.5s';
   const rearDur = isHovered ? '2.8s' : '4.2s';
@@ -361,4 +361,4 @@ export function LaptopMockup({ isHovered = false }) {
       </div>
     </div>
   );
-}
+});

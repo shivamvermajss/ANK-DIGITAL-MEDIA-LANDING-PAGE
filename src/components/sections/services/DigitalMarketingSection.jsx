@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, TrendingUp } from 'lucide-react';
 import { MARKETING_CATEGORY } from '../../../data/services';
@@ -19,19 +19,56 @@ import { MarketingServiceCard } from './MarketingServiceCard';
 export function DigitalMarketingSection() {
   const shouldReduceMotion = useReducedMotion();
   const featuredCardRef = useRef(null);
+  const featuredRectRef = useRef(null);
+  const featuredRafRef = useRef(null);
   const [isFeaturedHovered, setIsFeaturedHovered] = useState(false);
+
+  const handleFeaturedMouseEnter = useCallback(() => {
+    setIsFeaturedHovered(true);
+    if (featuredCardRef.current) {
+      featuredRectRef.current = featuredCardRef.current.getBoundingClientRect();
+    }
+  }, []);
 
   const handleFeaturedMouseMove = useCallback(
     (e) => {
       if (shouldReduceMotion || !featuredCardRef.current) return;
-      const rect = featuredCardRef.current.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      featuredCardRef.current.style.setProperty('--mouse-x', `${x}px`);
-      featuredCardRef.current.style.setProperty('--mouse-y', `${y}px`);
+      const clientX = e.clientX;
+      const clientY = e.clientY;
+      if (featuredRafRef.current) return;
+
+      featuredRafRef.current = requestAnimationFrame(() => {
+        featuredRafRef.current = null;
+        if (!featuredCardRef.current) return;
+        if (!featuredRectRef.current) {
+          featuredRectRef.current = featuredCardRef.current.getBoundingClientRect();
+        }
+        const rect = featuredRectRef.current;
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
+        featuredCardRef.current.style.setProperty('--mouse-x', `${x}px`);
+        featuredCardRef.current.style.setProperty('--mouse-y', `${y}px`);
+      });
     },
     [shouldReduceMotion]
   );
+
+  const handleFeaturedMouseLeave = useCallback(() => {
+    if (featuredRafRef.current) {
+      cancelAnimationFrame(featuredRafRef.current);
+      featuredRafRef.current = null;
+    }
+    featuredRectRef.current = null;
+    setIsFeaturedHovered(false);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (featuredRafRef.current) {
+        cancelAnimationFrame(featuredRafRef.current);
+      }
+    };
+  }, []);
 
   return (
     <div className="relative mb-24 sm:mb-28 lg:mb-36 select-none">
@@ -135,8 +172,8 @@ export function DigitalMarketingSection() {
         <motion.div
           ref={featuredCardRef}
           onMouseMove={handleFeaturedMouseMove}
-          onMouseEnter={() => setIsFeaturedHovered(true)}
-          onMouseLeave={() => setIsFeaturedHovered(false)}
+          onMouseEnter={handleFeaturedMouseEnter}
+          onMouseLeave={handleFeaturedMouseLeave}
           initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}

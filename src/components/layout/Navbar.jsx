@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Menu, X, ArrowRight } from 'lucide-react';
 import { navigationLinks } from '../../data/navigation';
-import { useScrollPosition } from '../../hooks/useScrollPosition';
 import { cn } from '../../lib/utils';
 
 export function Navbar() {
@@ -11,28 +10,39 @@ export function Navbar() {
   const [activeSection, setActiveSection] = useState('');
   const navRef = useRef(null);
 
-  const scrollY = useScrollPosition();
+  const [isScrolled, setIsScrolled] = useState(false);
   const shouldReduceMotion = useReducedMotion();
-  const isScrolled = scrollY > 20;
 
-  // Active section scroll detection
+  // Unified, rAF-throttled scroll detection for glassmorphism and active section
   useEffect(() => {
     const sectionIds = ['services', 'technologies', 'about'];
+    let ticking = false;
+
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + 140;
-      let current = '';
-      for (const id of sectionIds) {
-        const el = document.getElementById(id);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            current = `#${id}`;
-            break;
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentY = window.scrollY;
+          const scrolled = currentY > 20;
+          setIsScrolled((prev) => (prev !== scrolled ? scrolled : prev));
+
+          const scrollPosition = currentY + 140;
+          let current = '';
+          for (const id of sectionIds) {
+            const el = document.getElementById(id);
+            if (el) {
+              const top = el.offsetTop;
+              const height = el.offsetHeight;
+              if (scrollPosition >= top && scrollPosition < top + height) {
+                current = `#${id}`;
+                break;
+              }
+            }
           }
-        }
+          setActiveSection((prev) => (prev !== current ? current : prev));
+          ticking = false;
+        });
+        ticking = true;
       }
-      setActiveSection(current);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -106,6 +116,11 @@ export function Navbar() {
             <img
               src="/logo.webp"
               alt="ANK Digital Media Logo"
+              width="44"
+              height="44"
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
               className="h-10 sm:h-11 w-auto object-contain mix-blend-multiply transition-transform duration-200 group-hover:scale-[1.04]"
             />
 

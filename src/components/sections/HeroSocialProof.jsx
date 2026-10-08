@@ -6,7 +6,7 @@ import { Star } from 'lucide-react';
  * Recreates the exact avatar cluster, 5-star rating, and trust copy from the reference image:
  * [AK] [NX] [TS] [WD] ★★★★★ Built for ambitious brands / Enterprise-grade engineering standards
  */
-export function HeroSocialProof() {
+export const HeroSocialProof = React.memo(function HeroSocialProof() {
   return (
     <div className="flex items-center gap-3 sm:gap-3.5 select-none pt-1">
       {/* 4 Avatar Badges (AK, NX, TS, WD) */}
@@ -44,4 +44,4 @@ export function HeroSocialProof() {
       </div>
     </div>
   );
-}
+});

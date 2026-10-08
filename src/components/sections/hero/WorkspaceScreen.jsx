@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Files, Search, GitBranch, Settings } from 'lucide-react';
 
@@ -223,12 +223,10 @@ function TypingCodeEditor() {
   const [isFading, setIsFading] = useState(false);
 
   useEffect(() => {
-    if (shouldReduceMotion) {
-      setCharCount(TOTAL_CODE_CHARS);
-      return;
-    }
+    if (shouldReduceMotion) return;
 
     let timer;
+    let resetTimer;
     if (charCount < TOTAL_CODE_CHARS) {
       timer = setTimeout(() => {
         setCharCount((prev) => prev + 1);
@@ -237,15 +235,17 @@ function TypingCodeEditor() {
       // Reached complete code: pause 2.6 seconds, then smooth fade and reset
       timer = setTimeout(() => {
         setIsFading(true);
-        const resetTimer = setTimeout(() => {
+        resetTimer = setTimeout(() => {
           setCharCount(0);
           setIsFading(false);
         }, 350);
-        return () => clearTimeout(resetTimer);
       }, 2600);
     }
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(resetTimer);
+    };
   }, [charCount, shouldReduceMotion]);
 
   return (

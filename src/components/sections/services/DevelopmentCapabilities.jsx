@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback, createContext } from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import {
   ArrowRight,
@@ -13,17 +13,13 @@ import {
   ShoppingBag,
   CreditCard,
   FileText,
-  Monitor,
 } from 'lucide-react';
 import { DEVELOPMENT_CATEGORY } from '../../../data/services';
 import { ServiceIcon } from './ServiceIcon';
 import { WebPlatformVisual } from './WebPlatformVisual';
 import { SystemArchitectureVisual } from './SystemArchitectureVisual';
-
-/**
- * CardHoverContext: Exposes featured card hover state to child visuals
- */
-export const CardHoverContext = createContext(false);
+import { CardHoverContext } from './CardHoverContext';
+export { CardHoverContext };
 
 /**
  * Technology Pill Configuration:
@@ -250,26 +246,55 @@ function SpotlightCard({
   ...props
 }) {
   const cardRef = useRef(null);
+  const rectRef = useRef(null);
+  const rafRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = useCallback(() => {
+    setIsHovered(true);
+    if (cardRef.current) {
+      rectRef.current = cardRef.current.getBoundingClientRect();
+    }
+  }, []);
 
   const handleMouseMove = useCallback(
     (e) => {
       if (reducedMotion || !cardRef.current) return;
-      const rect = cardRef.current.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      cardRef.current.style.setProperty('--mouse-x', `${x}px`);
-      cardRef.current.style.setProperty('--mouse-y', `${y}px`);
+      const clientX = e.clientX;
+      const clientY = e.clientY;
+      if (rafRef.current) return;
+
+      rafRef.current = requestAnimationFrame(() => {
+        rafRef.current = null;
+        if (!cardRef.current) return;
+        if (!rectRef.current) {
+          rectRef.current = cardRef.current.getBoundingClientRect();
+        }
+        const rect = rectRef.current;
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
+        cardRef.current.style.setProperty('--mouse-x', `${x}px`);
+        cardRef.current.style.setProperty('--mouse-y', `${y}px`);
+      });
     },
     [reducedMotion]
   );
 
-  const handleMouseEnter = useCallback(() => {
-    setIsHovered(true);
+  const handleMouseLeave = useCallback(() => {
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+    rectRef.current = null;
+    setIsHovered(false);
   }, []);
 
-  const handleMouseLeave = useCallback(() => {
-    setIsHovered(false);
+  useEffect(() => {
+    return () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    };
   }, []);
 
   return (

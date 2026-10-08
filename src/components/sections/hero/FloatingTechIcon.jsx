@@ -92,7 +92,7 @@ const BRAND_ICONS = {
  * FloatingTechIcon Component
  * Dark glossy squircles with glowing borders and brand logos matching reference image.
  */
-export function FloatingTechIcon({ item, isMobile }) {
+export const FloatingTechIcon = React.memo(function FloatingTechIcon({ item, isMobile }) {
   const shouldReduceMotion = useReducedMotion();
   const IconComponent = BRAND_ICONS[item.icon] || ReactIcon;
   const activeFloatRange = isMobile
@@ -137,4 +137,4 @@ export function FloatingTechIcon({ item, isMobile }) {
       </motion.div>
     </div>
   );
-}
+});

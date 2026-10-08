@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Sparkles, MessageSquare, Bot } from 'lucide-react';
+import { Sparkles, Bot } from 'lucide-react';
 
 /**
  * WhatsAppPreview Component

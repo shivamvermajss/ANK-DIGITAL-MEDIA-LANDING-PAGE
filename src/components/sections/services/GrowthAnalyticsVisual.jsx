@@ -4,10 +4,7 @@ import {
   Search,
   Users,
   Sparkles,
-  MapPin,
   TrendingUp,
-  Activity,
-  ArrowUpRight,
 } from 'lucide-react';
 
 /**
