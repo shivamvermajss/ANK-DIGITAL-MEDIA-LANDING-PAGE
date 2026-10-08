@@ -7,10 +7,10 @@ import { InfrastructureCard } from './InfrastructureCard';
  * InfrastructureSection Component (04 / POWER • DIGITAL FOUNDATION)
  * 
  * Digital foundation visual system:
- * - Ambient blue/indigo glow & subtle 24px dot-grid background
+ * - 24px subtle dot-grid canvas behind content, cards, and text (-z-10, opacity 0.28)
+ * - Atmospheric ambient radial glow (soft indigo biased toward Web Hosting + secondary weak violet glow)
  * - 2-column infrastructure visual cards: Web Hosting (micro-dashboard) & Domain Registration (DNS mesh)
  * - Authentic capability badges & interactive button-link CTAs
- * - Clean transition into Selected Work section
  * - Respects prefers-reduced-motion
  */
 export function InfrastructureSection() {
@@ -25,22 +25,33 @@ export function InfrastructureSection() {
 
   return (
     <section className="relative mb-0 rounded-3xl p-4 sm:p-6 lg:p-8 overflow-hidden">
-      {/* 1. Subtle 24px Background Dot Grid */}
+      {/* 1. Subtle 24px Background Dot Grid (strictly behind content & cards) */}
       <div
-        className="pointer-events-none absolute inset-0 rounded-3xl transition-opacity duration-500"
+        className="pointer-events-none absolute inset-0 rounded-3xl -z-10"
         style={{
-          backgroundImage: 'radial-gradient(rgba(148, 163, 184, 0.18) 1px, transparent 1px)',
+          backgroundImage: 'radial-gradient(#cbd5e1 1px, transparent 1px)',
           backgroundSize: '24px 24px',
+          opacity: 0.28,
+        }}
+        aria-hidden="true"
+      />
+
+      {/* 2. Ambient Radial Glow: Primary soft indigo biased toward Web Hosting */}
+      <div
+        className="pointer-events-none absolute top-28 left-[35%] -translate-x-1/2 w-[600px] sm:w-[800px] h-[400px] rounded-full blur-[120px] -z-10"
+        style={{
+          background: 'radial-gradient(circle, rgba(99, 102, 241, 0.16), transparent 65%)',
           opacity: 0.85,
         }}
         aria-hidden="true"
       />
 
-      {/* 2. Soft Ambient Blue/Indigo Glow behind infrastructure cards */}
+      {/* Secondary weak violet/blue glow behind Domain Registration card */}
       <div
-        className="pointer-events-none absolute top-12 left-1/2 -translate-x-1/2 w-[700px] sm:w-[900px] h-[360px] rounded-full blur-[120px] opacity-[0.08]"
+        className="pointer-events-none absolute top-36 left-[72%] -translate-x-1/2 w-[450px] sm:w-[650px] h-[360px] rounded-full blur-[120px] -z-10"
         style={{
-          background: 'radial-gradient(circle, rgba(96, 165, 250, 0.7), rgba(99, 102, 241, 0.5), transparent 70%)',
+          background: 'radial-gradient(circle, rgba(139, 92, 246, 0.10), transparent 65%)',
+          opacity: 0.75,
         }}
         aria-hidden="true"
       />

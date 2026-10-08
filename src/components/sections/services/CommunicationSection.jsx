@@ -29,23 +29,33 @@ export function CommunicationSection() {
   );
 
   return (
-    <section className="relative mb-24 sm:mb-28 lg:mb-36 rounded-3xl p-4 sm:p-6 lg:p-8 overflow-hidden">
-      {/* 1. Subtle 24px Background Dot Grid */}
+    <section className="relative mb-24 sm:mb-28 lg:mb-36 rounded-3xl p-4 sm:p-6 lg:p-8 overflow-hidden select-none">
+      {/* 1. Subtle 24px Background Dot Grid Canvas (behind all content) */}
       <div
-        className="pointer-events-none absolute inset-0 rounded-3xl transition-opacity duration-500"
+        className="pointer-events-none absolute inset-0 rounded-3xl -z-10"
         style={{
-          backgroundImage: 'radial-gradient(rgba(148, 163, 184, 0.18) 1px, transparent 1px)',
+          backgroundImage: 'radial-gradient(#cbd5e1 1px, transparent 1px)',
           backgroundSize: '24px 24px',
-          opacity: 0.85,
+          opacity: 0.28,
         }}
         aria-hidden="true"
       />
 
-      {/* 2. Soft Ambient Sky/Cyan Orb behind top featured area */}
+      {/* 2. Soft Ambient Background Glows */}
+      {/* 2a. Ambient Headline Glow - positioned primarily behind 'HAPPEN.' */}
       <div
-        className="pointer-events-none absolute top-12 left-1/2 -translate-x-1/2 w-[650px] sm:w-[850px] h-[350px] rounded-full blur-[110px] opacity-[0.08]"
+        className="pointer-events-none absolute top-10 left-1/4 sm:left-1/3 w-[550px] sm:w-[680px] h-[360px] -translate-x-1/2 rounded-full blur-[120px] opacity-25 -z-10"
         style={{
-          background: 'radial-gradient(circle, rgba(6, 182, 212, 0.9), rgba(59, 130, 246, 0.6), transparent 70%)',
+          background: 'radial-gradient(circle, rgba(56, 189, 248, 0.22), rgba(99, 102, 241, 0.12), transparent 68%)',
+        }}
+        aria-hidden="true"
+      />
+
+      {/* 2b. Ambient Right Accent Glow */}
+      <div
+        className="pointer-events-none absolute top-1/2 right-[-5%] w-[500px] sm:w-[650px] h-[350px] rounded-full blur-[130px] opacity-15 -z-10"
+        style={{
+          background: 'radial-gradient(circle, rgba(139, 92, 246, 0.14), rgba(59, 130, 246, 0.10), transparent 65%)',
         }}
         aria-hidden="true"
       />
@@ -67,18 +77,24 @@ export function CommunicationSection() {
             <span className="text-cyan-600/80">COMMUNICATION CHANNELS</span>
           </div>
 
-          {/* Heading with smooth cyan -> blue gradient on HAPPEN. */}
+          {/* Heading with smooth cyan -> blue gradient on HAPPEN. with subtle ambient back-glow */}
           <h3 className="font-heading font-black text-2xl sm:text-4xl lg:text-[2.75rem] text-[#0F172A] tracking-[-0.03em] leading-[1.08]">
             REACH PEOPLE WHERE
             <span className="block mt-1">
               CONVERSATIONS{' '}
-              <span
-                className="bg-clip-text text-transparent inline-block font-black"
-                style={{
-                  backgroundImage: 'linear-gradient(90deg, #06B6D4 0%, #3B82F6 50%, #2563EB 100%)',
-                }}
-              >
-                HAPPEN.
+              <span className="relative inline-block">
+                <span
+                  className="pointer-events-none absolute -inset-x-8 -inset-y-4 rounded-full bg-sky-200/20 blur-[50px] -z-10"
+                  aria-hidden="true"
+                />
+                <span
+                  className="bg-clip-text text-transparent inline-block font-black"
+                  style={{
+                    backgroundImage: 'linear-gradient(90deg, #06B6D4 0%, #3B82F6 50%, #2563EB 100%)',
+                  }}
+                >
+                  HAPPEN.
+                </span>
               </span>
             </span>
           </h3>
@@ -90,29 +106,47 @@ export function CommunicationSection() {
         </p>
       </motion.div>
 
-      {/* 4. PRIMARY FEATURED CHANNELS (ASYMMETRIC BENTO TOP TIER) */}
-      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+      {/* 4. ASYMMETRIC BENTO GRID (ALL 9 COMMUNICATION SERVICES) */}
+      <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-5 sm:gap-6">
+        {/* Tier 1: Asymmetric Featured Split (WhatsApp ~7 cols, OTP ~5 cols) */}
         {whatsappService && (
-          <CommunicationFeaturedCard
-            service={whatsappService}
-            previewType="whatsapp"
-          />
+          <div className="relative md:col-span-2 lg:col-span-7 flex flex-col">
+            {/* Ambient depth behind WhatsApp card (soft emerald tint) */}
+            <div
+              className="pointer-events-none absolute -inset-4 sm:-inset-6 rounded-3xl blur-[90px] -z-10 opacity-70"
+              style={{
+                background: 'radial-gradient(circle at 60% 40%, rgba(16, 185, 129, 0.12), transparent 70%)',
+              }}
+              aria-hidden="true"
+            />
+            <CommunicationFeaturedCard
+              service={whatsappService}
+              previewType="whatsapp"
+            />
+          </div>
         )}
         {otpService && (
-          <CommunicationFeaturedCard
-            service={otpService}
-            previewType="otp"
-          />
+          <div className="relative md:col-span-2 lg:col-span-5 flex flex-col">
+            {/* Ambient depth behind OTP card (soft indigo tint) */}
+            <div
+              className="pointer-events-none absolute -inset-4 sm:-inset-6 rounded-3xl blur-[90px] -z-10 opacity-70"
+              style={{
+                background: 'radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.12), transparent 70%)',
+              }}
+              aria-hidden="true"
+            />
+            <CommunicationFeaturedCard
+              service={otpService}
+              previewType="otp"
+            />
+          </div>
         )}
-      </div>
 
-      {/* 5. SECONDARY SUPPORTING COMMUNICATION SERVICES */}
-      <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-5">
-        {/* Row 1: Bulk SMS, Voice Call, IVR (3 columns on lg -> 4 cols each) */}
+        {/* Tier 2: 3 Supporting Channels (4 cols each on lg) */}
         {secondaryServices.slice(0, 3).map((service, index) => (
           <div
             key={service.id}
-            className="sm:col-span-1 lg:col-span-4 flex flex-col"
+            className="md:col-span-1 lg:col-span-4 flex flex-col"
           >
             <CommunicationServiceCard
               service={service}
@@ -121,13 +155,11 @@ export function CommunicationSection() {
           </div>
         ))}
 
-        {/* Row 2: Missed Call, Transactional SMS, Promotional SMS, RCS (4 columns on lg -> 3 cols each) */}
+        {/* Tier 3: 4 Supporting Channels (3 cols each on lg) */}
         {secondaryServices.slice(3).map((service, index) => (
           <div
             key={service.id}
-            className={`sm:col-span-1 ${
-              index === 3 ? 'sm:col-span-2 lg:col-span-3' : 'lg:col-span-3'
-            } flex flex-col`}
+            className="md:col-span-1 lg:col-span-3 flex flex-col"
           >
             <CommunicationServiceCard
               service={service}

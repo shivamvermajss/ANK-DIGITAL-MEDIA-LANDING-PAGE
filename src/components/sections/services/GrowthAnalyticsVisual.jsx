@@ -33,12 +33,12 @@ export function GrowthAnalyticsVisual() {
     <div
       className="relative rounded-2xl p-4 sm:p-5 select-none transition-all duration-300"
       style={{
-        background: 'rgba(255, 255, 255, 0.78)',
+        background: 'rgba(255, 255, 255, 0.90)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
-        border: '1px solid rgba(226, 232, 240, 0.85)',
+        border: '1px solid rgba(226, 232, 240, 0.90)',
         boxShadow:
-          '0 12px 30px -10px rgba(99, 102, 241, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
+          '0 12px 30px -10px rgba(99, 102, 241, 0.12), 0 4px 12px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
       }}
     >
       {/* 1. Micro-Analytics Header */}

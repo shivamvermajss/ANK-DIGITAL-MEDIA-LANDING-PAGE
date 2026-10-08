@@ -1,21 +1,21 @@
 import React, { useState, useRef } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Server, Globe } from 'lucide-react';
-import { CapabilityPill } from './CapabilityPill';
+import { InfrastructureBadge } from './InfrastructureBadge';
 import { HostingInfrastructureVisual } from './HostingInfrastructureVisual';
 import { DomainInfrastructureVisual } from './DomainInfrastructureVisual';
 
 /**
  * InfrastructureCard Component
  * 
- * Floating frosted-glass infrastructure visual card.
- * Replaces static checklists with rich live micro-dashboards.
+ * Elevated infrastructure visual card for Power / Digital Foundation.
  * Features:
- * - Dynamic cursor spotlight
- * - 42px frosted icon capsule with accent glow
- * - Inner visual surface (Hosting or Domain visual)
- * - Compact capability badges
- * - Interactive button-link CTA
+ * - Premium hover lift (translateY -4px, scale 1.005, duration 0.3s cubic-bezier(0.16, 1, 0.3, 1))
+ * - Cursor-following border sheen masked strictly to the 1px card border
+ * - High-contrast inner mockup separation
+ * - Interactive capability badges with tailored domain hover effects
+ * - Subtle CTA link with smooth translateX(5-6px) arrow transition
+ * - Strictly avoids fake metrics and unverified vendor claims
  * - Respects prefers-reduced-motion
  */
 export function InfrastructureCard({ service, index = 0 }) {
@@ -24,42 +24,39 @@ export function InfrastructureCard({ service, index = 0 }) {
   const cardRef = useRef(null);
 
   const isHosting = service.id === 'web-hosting';
-  const accentKey = service.accent || (isHosting ? 'blue' : 'indigo');
 
   const accentStyles = isHosting
     ? {
-        border: 'rgba(59, 130, 246, 0.22)',
+        border: 'rgba(226, 232, 240, 0.90)',
         borderHover: 'rgba(59, 130, 246, 0.45)',
-        shadow: '0 20px 48px -24px rgba(59, 130, 246, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.85)',
-        shadowHover: '0 26px 56px -20px rgba(59, 130, 246, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.95)',
+        borderSheen: 'rgba(59, 130, 246, 0.40)',
+        shadow: '0 20px 48px -24px rgba(59, 130, 246, 0.10), 0 2px 8px rgba(15, 23, 42, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.90)',
+        shadowHover: '0 26px 56px -20px rgba(59, 130, 246, 0.18), 0 4px 14px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.95)',
         badgeBg: 'rgba(239, 246, 255, 0.95)',
         badgeText: '#1D4ED8',
-        badgeBorder: 'rgba(59, 130, 246, 0.3)',
-        iconBgHover: 'rgba(239, 246, 255, 0.95)',
+        badgeBorder: 'rgba(59, 130, 246, 0.30)',
+        iconBgHover: 'rgba(239, 246, 255, 0.98)',
         iconBorderHover: 'rgba(59, 130, 246, 0.35)',
         iconColor: '#2563EB',
         ctaText: '#2563EB',
         ctaBgHover: 'rgba(239, 246, 255, 0.95)',
         ctaBorderHover: 'rgba(59, 130, 246, 0.35)',
-        spotlight: 'rgba(59, 130, 246, 0.09)',
-        sheenGradient: 'linear-gradient(135deg, rgba(59,130,246,0.3), rgba(6,182,212,0.3), transparent 70%)',
       }
     : {
-        border: 'rgba(99, 102, 241, 0.22)',
+        border: 'rgba(226, 232, 240, 0.90)',
         borderHover: 'rgba(99, 102, 241, 0.45)',
-        shadow: '0 20px 48px -24px rgba(99, 102, 241, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.85)',
-        shadowHover: '0 26px 56px -20px rgba(99, 102, 241, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.95)',
+        borderSheen: 'rgba(99, 102, 241, 0.40)',
+        shadow: '0 20px 48px -24px rgba(99, 102, 241, 0.10), 0 2px 8px rgba(15, 23, 42, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.90)',
+        shadowHover: '0 26px 56px -20px rgba(99, 102, 241, 0.18), 0 4px 14px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.95)',
         badgeBg: 'rgba(238, 242, 255, 0.95)',
         badgeText: '#4338CA',
-        badgeBorder: 'rgba(99, 102, 241, 0.3)',
-        iconBgHover: 'rgba(238, 242, 255, 0.95)',
+        badgeBorder: 'rgba(99, 102, 241, 0.30)',
+        iconBgHover: 'rgba(238, 242, 255, 0.98)',
         iconBorderHover: 'rgba(99, 102, 241, 0.35)',
         iconColor: '#4F46E5',
         ctaText: '#4F46E5',
         ctaBgHover: 'rgba(238, 242, 255, 0.95)',
         ctaBorderHover: 'rgba(99, 102, 241, 0.35)',
-        spotlight: 'rgba(99, 102, 241, 0.09)',
-        sheenGradient: 'linear-gradient(135deg, rgba(99,102,241,0.3), rgba(139,92,246,0.3), transparent 70%)',
       };
 
   const handleMouseMove = (e) => {
@@ -82,25 +79,29 @@ export function InfrastructureCard({ service, index = 0 }) {
         delay: shouldReduceMotion ? 0 : index * 0.08,
         ease: [0.16, 1, 0.3, 1],
       }}
-      whileHover={shouldReduceMotion ? {} : { y: -4, scale: 1.01 }}
+      whileHover={shouldReduceMotion ? {} : { y: -4, scale: 1.005 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onMouseMove={handleMouseMove}
       className="relative p-6 sm:p-7 lg:p-8 rounded-3xl transition-all duration-300 flex flex-col justify-between group overflow-hidden h-full"
       style={{
-        background: 'rgba(255, 255, 255, 0.78)',
+        background: 'rgba(255, 255, 255, 0.85)',
         backdropFilter: 'blur(24px)',
         WebkitBackdropFilter: 'blur(24px)',
         border: `1px solid ${isHovered ? accentStyles.borderHover : accentStyles.border}`,
         boxShadow: isHovered ? accentStyles.shadowHover : accentStyles.shadow,
+        transition: 'border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
       }}
     >
-      {/* 1. Dynamic Cursor Spotlight */}
+      {/* 1. Cursor-Following Border Sheen (180px circle masked strictly to 1px border) */}
       <div
-        className="pointer-events-none absolute inset-0 rounded-[inherit] transition-opacity duration-300 hidden sm:block"
+        className="pointer-events-none absolute inset-0 rounded-[inherit] p-[1px] transition-opacity duration-300 hidden sm:block"
         style={{
           opacity: isHovered && !shouldReduceMotion ? 1 : 0,
-          background: `radial-gradient(400px circle at var(--mouse-x, -500px) var(--mouse-y, -500px), ${accentStyles.spotlight}, transparent 45%)`,
+          background: `radial-gradient(180px circle at var(--mouse-x, -500px) var(--mouse-y, -500px), ${accentStyles.borderSheen}, transparent 70%)`,
+          WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+          WebkitMaskComposite: 'xor',
+          maskComposite: 'exclude',
         }}
         aria-hidden="true"
       />
@@ -153,7 +154,7 @@ export function InfrastructureCard({ service, index = 0 }) {
         </p>
       </div>
 
-      {/* 3. Central Infrastructure Micro-Visual (Dashboard or Domain Search) */}
+      {/* 3. Central Infrastructure Micro-Visual (Hosting Dashboard or Domain Search) */}
       <div className="relative z-10 mb-5">
         {isHosting ? (
           <HostingInfrastructureVisual isHovered={isHovered} />
@@ -164,31 +165,32 @@ export function InfrastructureCard({ service, index = 0 }) {
 
       {/* 4. Bottom Area: Capability Badges & Interactive CTA */}
       <div className="relative z-10 pt-4 border-t border-slate-100/90 flex flex-col gap-3.5">
-        {/* Capability Pills */}
+        {/* Capability Badges with Interactive Tints */}
         {service.capabilities && service.capabilities.length > 0 && (
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex flex-wrap gap-2">
             {service.capabilities.map((cap, i) => (
-              <CapabilityPill key={i} text={cap} accent={accentKey} />
+              <InfrastructureBadge key={i} text={cap} />
             ))}
           </div>
         )}
 
-        {/* Action Button-Link */}
+        {/* Action Button-Link & Status Indicator */}
         <div className="flex items-center justify-between pt-1">
           <a
             href="#contact"
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-[10px] text-xs font-mono font-semibold transition-all duration-200 shadow-2xs"
+            className="group/cta inline-flex items-center gap-2 px-3.5 py-1.5 rounded-[10px] text-xs font-mono font-medium transition-all duration-300 select-none shadow-2xs hover:shadow-xs"
             style={{
-              background: isHovered ? accentStyles.ctaBgHover : 'rgba(248, 250, 252, 0.8)',
-              border: `1px solid ${isHovered ? accentStyles.ctaBorderHover : 'rgba(226, 232, 240, 0.8)'}`,
+              background: isHovered ? accentStyles.ctaBgHover : 'rgba(248, 250, 252, 0.85)',
+              border: `1px solid ${isHovered ? accentStyles.ctaBorderHover : 'rgba(226, 232, 240, 0.85)'}`,
               color: isHovered ? accentStyles.ctaText : '#475569',
             }}
           >
-            <span>Setup & Configuration</span>
+            <span className="transition-colors duration-200 group-hover/cta:font-semibold">
+              Setup & Configuration
+            </span>
             <ArrowRight
-              className="w-3.5 h-3.5 transition-transform duration-200"
+              className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1.5 group-hover/cta:translate-x-1.5"
               style={{
-                transform: isHovered ? 'translateX(4px)' : 'translateX(0)',
                 color: isHovered ? accentStyles.ctaText : '#94a3b8',
               }}
             />
@@ -199,7 +201,7 @@ export function InfrastructureCard({ service, index = 0 }) {
               className="w-1.5 h-1.5 rounded-full"
               style={{ background: isHovered ? accentStyles.iconColor : '#94a3b8' }}
             />
-            <span>{isHosting ? 'High Availability' : 'DNS Propagation'}</span>
+            <span>{isHosting ? 'Active Infrastructure' : 'DNS Resolution'}</span>
           </div>
         </div>
       </div>

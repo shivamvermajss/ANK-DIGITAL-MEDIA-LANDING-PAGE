@@ -103,7 +103,7 @@ export function MarketingServiceCard({ service, index = 0 }) {
               aria-label={`Inquire about ${service.title}`}
               className="w-7 h-7 rounded-full flex items-center justify-center text-slate-300 group-hover:text-indigo-600 group-hover:bg-indigo-50/90 group-hover:border group-hover:border-indigo-200/60 transition-all duration-200"
             >
-              <div className="group-hover:translate-x-1 transition-transform duration-200">
+              <div className="group-hover:translate-x-1.5 transition-transform duration-300">
                 <ArrowRight className="w-3.5 h-3.5" />
               </div>
             </a>

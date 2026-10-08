@@ -215,7 +215,7 @@ export function Services() {
                   <a
                     key={pillar.id}
                     href={pillar.href}
-                    className={`group relative flex flex-col justify-between p-4 sm:p-5 rounded-2xl bg-white/80 backdrop-blur-md border border-slate-200/90 shadow-2xs transition-all duration-200 cursor-pointer select-none ${hoverBorder}`}
+                    className={`group relative flex flex-col justify-between p-4 sm:p-5 rounded-2xl bg-white/80 backdrop-blur-md border border-slate-200/90 shadow-2xs hover:-translate-y-1 hover:shadow-[0_12px_28px_-8px_rgba(99,102,241,0.14)] transition-all duration-300 cursor-pointer select-none ${hoverBorder}`}
                   >
                     <div>
                       <div className="flex items-center justify-between gap-2 mb-2.5">
@@ -224,7 +224,7 @@ export function Services() {
                         >
                           {pillar.code} — {pillar.category}
                         </span>
-                        <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-700 group-hover:translate-x-0.5 transition-all" />
+                        <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-700 group-hover:translate-x-1.5 transition-transform duration-300" />
                       </div>
                       <h4 className="font-heading font-bold text-sm sm:text-base text-slate-900 mb-1 group-hover:text-slate-950 transition-colors">
                         {pillar.title}

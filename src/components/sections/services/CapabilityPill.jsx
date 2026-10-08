@@ -24,11 +24,11 @@ export function CapabilityPill({ text, accent = 'blue' }) {
     <span
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="inline-flex items-center text-[10px] sm:text-[11px] font-mono px-2.5 py-0.5 rounded-full transition-all duration-200 select-none cursor-default"
+      className="inline-flex items-center text-[10px] sm:text-[11px] font-mono font-medium px-2.5 py-1 rounded-full transition-all duration-200 select-none cursor-default shadow-2xs"
       style={{
-        background: isHovered ? styleConfig.bg : 'rgba(248, 250, 252, 0.85)',
-        border: `1px solid ${isHovered ? styleConfig.border : 'rgba(226, 232, 240, 0.85)'}`,
-        color: isHovered ? styleConfig.text : '#64748b', // slate-500
+        background: isHovered ? styleConfig.bg : '#f8fafc', // bg-slate-50
+        border: `1px solid ${isHovered ? styleConfig.border : '#e2e8f0'}`, // border-slate-200
+        color: isHovered ? styleConfig.text : '#475569', // slate-600
       }}
     >
       {text}

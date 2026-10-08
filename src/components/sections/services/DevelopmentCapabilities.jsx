@@ -8,6 +8,7 @@ import {
   Server,
   Code2,
   Database,
+  Palette,
 } from 'lucide-react';
 import { DEVELOPMENT_CATEGORY } from '../../../data/services';
 import { ServiceIcon } from './ServiceIcon';
@@ -20,41 +21,125 @@ import { SystemArchitectureVisual } from './SystemArchitectureVisual';
 export const CardHoverContext = createContext(false);
 
 /**
- * Helper to select subtle Lucide icons for technology pills
+ * Technology Pill Configuration:
+ * Brand-aware accents, icons, and subtle colored glows on hover.
  */
-function getTechIcon(name) {
-  switch (name.toLowerCase()) {
-    case 'react':
-      return <Atom className="w-3 h-3 text-cyan-600/80 group-hover/pill:text-cyan-600 transition-colors" />;
-    case 'next.js':
-      return <Layers className="w-3 h-3 text-slate-700 group-hover/pill:text-indigo-600 transition-colors" />;
-    case 'node.js':
-      return <Server className="w-3 h-3 text-emerald-600/80 group-hover/pill:text-emerald-600 transition-colors" />;
-    case 'apis':
-    case 'api':
-      return <Code2 className="w-3 h-3 text-indigo-500 group-hover/pill:text-indigo-600 transition-colors" />;
-    case 'database':
-      return <Database className="w-3 h-3 text-blue-500 group-hover/pill:text-blue-600 transition-colors" />;
-    default:
-      return null;
-  }
-}
+const TECH_PILL_CONFIG = {
+  react: {
+    icon: Atom,
+    hoverBorder: 'rgba(6, 182, 212, 0.45)', // cyan/blue
+    hoverBg: 'rgba(236, 254, 255, 0.95)',
+    hoverText: '#0891b2',
+    hoverShadow: '0 4px 14px -2px rgba(6, 182, 212, 0.18)',
+    iconColor: '#06b6d4',
+  },
+  'next.js': {
+    icon: Layers,
+    hoverBorder: 'rgba(100, 116, 139, 0.45)', // neutral/slate
+    hoverBg: 'rgba(241, 245, 249, 0.95)',
+    hoverText: '#0f172a',
+    hoverShadow: '0 4px 14px -2px rgba(100, 116, 139, 0.16)',
+    iconColor: '#334155',
+  },
+  'node.js': {
+    icon: Server,
+    hoverBorder: 'rgba(16, 185, 129, 0.45)', // green/emerald
+    hoverBg: 'rgba(236, 253, 245, 0.95)',
+    hoverText: '#059669',
+    hoverShadow: '0 4px 14px -2px rgba(16, 185, 129, 0.18)',
+    iconColor: '#10b981',
+  },
+  apis: {
+    icon: Code2,
+    hoverBorder: 'rgba(99, 102, 241, 0.45)', // indigo/blue
+    hoverBg: 'rgba(238, 242, 255, 0.95)',
+    hoverText: '#4f46e5',
+    hoverShadow: '0 4px 14px -2px rgba(99, 102, 241, 0.18)',
+    iconColor: '#6366f1',
+  },
+  api: {
+    icon: Code2,
+    hoverBorder: 'rgba(99, 102, 241, 0.45)',
+    hoverBg: 'rgba(238, 242, 255, 0.95)',
+    hoverText: '#4f46e5',
+    hoverShadow: '0 4px 14px -2px rgba(99, 102, 241, 0.18)',
+    iconColor: '#6366f1',
+  },
+  database: {
+    icon: Database,
+    hoverBorder: 'rgba(59, 130, 246, 0.45)', // blue/teal
+    hoverBg: 'rgba(239, 246, 255, 0.95)',
+    hoverText: '#2563eb',
+    hoverShadow: '0 4px 14px -2px rgba(59, 130, 246, 0.18)',
+    iconColor: '#3b82f6',
+  },
+  html: {
+    icon: Code2,
+    hoverBorder: 'rgba(249, 115, 22, 0.45)',
+    hoverBg: 'rgba(255, 247, 237, 0.95)',
+    hoverText: '#c2410c',
+    hoverShadow: '0 4px 14px -2px rgba(249, 115, 22, 0.18)',
+    iconColor: '#ea580c',
+  },
+  css: {
+    icon: Palette,
+    hoverBorder: 'rgba(14, 165, 233, 0.45)',
+    hoverBg: 'rgba(240, 249, 255, 0.95)',
+    hoverText: '#0284c7',
+    hoverShadow: '0 4px 14px -2px rgba(14, 165, 233, 0.18)',
+    iconColor: '#0ea5e9',
+  },
+  'ui/ux': {
+    icon: Sparkles,
+    hoverBorder: 'rgba(139, 92, 246, 0.45)',
+    hoverBg: 'rgba(245, 243, 255, 0.95)',
+    hoverText: '#7c3aed',
+    hoverShadow: '0 4px 14px -2px rgba(139, 92, 246, 0.18)',
+    iconColor: '#8b5cf6',
+  },
+};
 
 /**
- * Upgraded Premium Compact Technology Pill Badge
+ * Premium Interactive Technology Capsule
  */
 function TechBadge({ text }) {
-  const icon = getTechIcon(text);
+  const [isHovered, setIsHovered] = useState(false);
+  const key = text.toLowerCase();
+  const config = TECH_PILL_CONFIG[key] || {
+    icon: Sparkles,
+    hoverBorder: 'rgba(99, 102, 241, 0.45)',
+    hoverBg: 'rgba(238, 242, 255, 0.95)',
+    hoverText: '#4f46e5',
+    hoverShadow: '0 4px 14px -2px rgba(99, 102, 241, 0.18)',
+    iconColor: '#6366f1',
+  };
+  const IconComponent = config.icon;
+
   return (
-    <span className="group/pill inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono font-medium text-slate-600 bg-slate-50/85 backdrop-blur-xs border border-slate-200/90 shadow-2xs hover:bg-indigo-50/90 hover:border-indigo-300/50 hover:text-indigo-600 transition-all duration-200 select-none">
-      {icon}
+    <span
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="group/pill inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-medium transition-all duration-200 select-none cursor-default shadow-2xs"
+      style={{
+        background: isHovered ? config.hoverBg : 'rgba(255, 255, 255, 0.80)',
+        border: `1px solid ${isHovered ? config.hoverBorder : 'rgba(226, 232, 240, 0.90)'}`,
+        color: isHovered ? config.hoverText : '#475569',
+        boxShadow: isHovered ? config.hoverShadow : '0 1px 2px 0 rgba(0, 0, 0, 0.03)',
+      }}
+    >
+      <IconComponent
+        className="w-3.5 h-3.5 transition-colors duration-200"
+        style={{
+          color: isHovered ? config.iconColor : '#64748b',
+        }}
+      />
       <span>{text}</span>
     </span>
   );
 }
 
 /**
- * Reusable SpotlightCard with Dynamic Cursor Tracking
+ * Reusable SpotlightCard with Dynamic Cursor Tracking & Subtle Border Sheen
  * Exposes --mouse-x and --mouse-y CSS variables directly for peak performance.
  */
 function SpotlightCard({
@@ -94,11 +179,11 @@ function SpotlightCard({
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        whileHover={reducedMotion ? {} : { y: isFeatured ? -4 : -3 }}
-        transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+        whileHover={reducedMotion ? {} : { y: isFeatured ? -5 : -3, scale: isFeatured ? 1.008 : 1 }}
+        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
         className={`group relative rounded-3xl overflow-hidden transition-all duration-300 select-none ${
           isFeatured
-            ? 'p-6 sm:p-8 bg-gradient-to-br from-white/95 via-white/90 to-indigo-50/40 border border-slate-200/80 shadow-[0_20px_50px_-25px_rgba(99,102,241,0.18)] hover:shadow-[0_25px_60px_-20px_rgba(99,102,241,0.25)] hover:border-slate-300/90 backdrop-blur-[20px]'
+            ? 'p-6 sm:p-8 bg-gradient-to-br from-white/95 via-white/90 to-indigo-50/40 border border-slate-200/80 shadow-[0_20px_50px_-25px_rgba(99,102,241,0.18)] hover:shadow-[0_28px_60px_-20px_rgba(99,102,241,0.26)] hover:border-slate-300/90 backdrop-blur-[20px]'
             : 'p-6 bg-white/80 backdrop-blur-xl border border-slate-200/90 shadow-[0_16px_40px_-25px_rgba(15,23,42,0.12)] hover:shadow-[0_22px_50px_-20px_rgba(99,102,241,0.18)] hover:border-indigo-300/70'
         } ${className}`}
         {...props}
@@ -108,16 +193,16 @@ function SpotlightCard({
           <>
             {/* Subtle Radial Light Glow inside card only */}
             <div
-              className="pointer-events-none absolute inset-0 rounded-3xl transition-opacity duration-300"
+              className="pointer-events-none absolute inset-0 rounded-3xl transition-opacity duration-300 hidden sm:block"
               style={{
                 background:
-                  'radial-gradient(500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(99, 102, 241, 0.09), transparent 45%)',
+                  'radial-gradient(500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(99, 102, 241, 0.08), transparent 45%)',
               }}
               aria-hidden="true"
             />
-            {/* Subtle Radial Border Sheen: light traveling around glass surface */}
+            {/* Subtle Radial Border Sheen: illuminates only the card border near cursor */}
             <div
-              className="pointer-events-none absolute inset-0 rounded-3xl transition-opacity duration-300"
+              className="pointer-events-none absolute inset-0 rounded-3xl transition-opacity duration-300 hidden sm:block"
               style={{
                 background:
                   'radial-gradient(380px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(99, 102, 241, 0.28), rgba(139, 92, 246, 0.18) 35%, transparent 60%)',
@@ -177,7 +262,7 @@ export function DevelopmentCapabilities() {
       className="relative scroll-mt-28 mb-24 sm:mb-28 lg:mb-36 select-none"
     >
       {/* ======================================================== */}
-      {/* 1. SECTION BACKGROUND: DOT GRID & 3 AMBIENT GRADIENT ORBS */}
+      {/* 1. SECTION BACKGROUND: DOT GRID & AMBIENT INDIGO MESH    */}
       {/* ======================================================== */}
       <div
         className="pointer-events-none absolute -inset-x-6 sm:-inset-x-12 -inset-y-12 sm:-inset-y-16 -z-10 overflow-hidden"
@@ -185,38 +270,31 @@ export function DevelopmentCapabilities() {
       >
         {/* Subtle technical canvas dot grid (24px x 24px) */}
         <div
-          className="absolute inset-0 opacity-60"
+          className="absolute inset-0"
           style={{
-            backgroundImage:
-              'radial-gradient(rgba(148, 163, 184, 0.18) 1px, transparent 1px)',
+            backgroundImage: 'radial-gradient(#cbd5e1 1px, transparent 1px)',
             backgroundSize: '24px 24px',
+            opacity: 0.28,
           }}
         />
 
-        {/* Orb 1: Indigo (Opacity ~0.08, blur 120px) */}
+        {/* Ambient Orb 1: Soft Indigo Mesh behind Left Web Application card */}
         <div
-          className="absolute top-10 left-1/4 w-[650px] h-[400px] -translate-x-1/2 rounded-full pointer-events-none"
+          className="absolute top-16 left-1/4 w-[600px] sm:w-[750px] h-[450px] -translate-x-1/2 rounded-full pointer-events-none"
           style={{
-            backgroundColor: 'rgba(99, 102, 241, 0.08)',
+            background: 'radial-gradient(circle, rgba(99, 102, 241, 0.16), rgba(165, 180, 252, 0.10), transparent 65%)',
             filter: 'blur(120px)',
+            opacity: 0.8,
           }}
         />
 
-        {/* Orb 2: Violet (Opacity ~0.06, blur 140px) */}
+        {/* Ambient Orb 2: Weaker Violet Mesh behind Right Software Development card */}
         <div
-          className="absolute top-1/2 right-10 w-[700px] h-[450px] rounded-full pointer-events-none"
+          className="absolute top-24 right-1/4 w-[500px] sm:w-[620px] h-[380px] translate-x-1/2 rounded-full pointer-events-none"
           style={{
-            backgroundColor: 'rgba(139, 92, 246, 0.06)',
-            filter: 'blur(140px)',
-          }}
-        />
-
-        {/* Orb 3: Blue (Opacity ~0.05, blur 120px) */}
-        <div
-          className="absolute bottom-10 left-1/3 w-[600px] h-[350px] rounded-full pointer-events-none"
-          style={{
-            backgroundColor: 'rgba(59, 130, 246, 0.05)',
-            filter: 'blur(120px)',
+            background: 'radial-gradient(circle, rgba(139, 92, 246, 0.10), rgba(196, 181, 253, 0.05), transparent 65%)',
+            filter: 'blur(130px)',
+            opacity: 0.6,
           }}
         />
       </div>
@@ -318,7 +396,7 @@ export function DevelopmentCapabilities() {
                       </span>
                       <span className="text-slate-400 font-normal">• Consultation</span>
                     </span>
-                    <div className="flex items-center gap-1 group-hover/cta:translate-x-1.5 transition-transform duration-250">
+                    <div className="flex items-center gap-1 group-hover/cta:translate-x-1.5 transition-transform duration-300">
                       <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover/cta:text-indigo-600 transition-colors" />
                     </div>
                   </a>
@@ -379,7 +457,7 @@ export function DevelopmentCapabilities() {
                 className="pt-3.5 flex items-center justify-between border-t border-slate-100 text-xs font-mono font-bold text-slate-500 group-hover:text-indigo-600 transition-colors cursor-pointer select-none"
               >
                 <span>Explore Capability</span>
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-200 text-slate-400 group-hover:text-indigo-600" />
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1.5 transition-transform duration-300 text-slate-400 group-hover:text-indigo-600" />
               </a>
             </SpotlightCard>
           ))}

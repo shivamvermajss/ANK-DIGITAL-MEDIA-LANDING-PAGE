@@ -29,22 +29,22 @@ export function SystemArchitectureVisual({ isCardHovered: propHover }) {
   const contextHover = useContext(CardHoverContext);
   const isCardHovered = propHover !== undefined ? propHover : contextHover;
 
-  // Particle speed: 4.6s default (slow & elegant), 1.8s on card hover (live & responsive)
-  const particleDur = isCardHovered ? '1.8s' : '4.6s';
-  const particleOpacity = isCardHovered ? 0.95 : 0.65;
-  const lineStroke = isCardHovered ? 'rgba(99, 102, 241, 0.38)' : 'rgba(99, 102, 241, 0.20)';
+  // Particle speed: normal ~3.2s, hover ~1.5s (within 2.5-3.5s and 1.2-1.8s as requested)
+  const particleDur = isCardHovered ? '1.5s' : '3.2s';
+  const particleOpacity = isCardHovered ? 0.98 : 0.85;
+  const lineStroke = isCardHovered ? 'rgba(99, 102, 241, 0.65)' : 'rgba(99, 102, 241, 0.38)';
 
   return (
     <div
       className="my-4 sm:my-5 rounded-2xl relative overflow-hidden p-3 sm:p-4 select-none transition-all duration-300"
       style={{
-        background: 'rgba(255, 255, 255, 0.72)',
+        background: 'rgba(255, 255, 255, 0.95)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
-        border: '1px solid rgba(226, 232, 240, 0.8)',
+        border: '1px solid rgba(226, 232, 240, 0.90)',
         boxShadow: isCardHovered
-          ? '0 16px 36px -10px rgba(99, 102, 241, 0.16), 0 4px 12px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8)'
-          : '0 12px 30px -10px rgba(99, 102, 241, 0.12), 0 4px 12px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
+          ? '0 20px 45px -10px rgba(99, 102, 241, 0.18), 0 4px 14px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.95)'
+          : '0 16px 35px -10px rgba(99, 102, 241, 0.12), 0 4px 12px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.95)',
       }}
     >
       {/* 1. Ambient Background Lighting */}
@@ -353,17 +353,17 @@ export function SystemArchitectureVisual({ isCardHovered: propHover }) {
           >
             <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/95 backdrop-blur-md border transition-all duration-200 ${
               isCardHovered
-                ? 'border-indigo-300/80 shadow-[0_6px_16px_-2px_rgba(99,102,241,0.18)]'
-                : 'border-slate-200/90 shadow-[0_4px_12px_-2px_rgba(99,102,241,0.10)]'
+                ? 'border-indigo-400/90 shadow-[0_8px_20px_-2px_rgba(99,102,241,0.22)]'
+                : 'border-slate-300/90 shadow-[0_6px_16px_-2px_rgba(99,102,241,0.14)]'
             }`}>
-              <div className="w-4 h-4 rounded-md bg-blue-50 border border-blue-200/70 flex items-center justify-center text-blue-600">
+              <div className="w-4 h-4 rounded-md bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600">
                 <Laptop className="w-2.5 h-2.5" />
               </div>
               <div className="leading-tight">
-                <span className="text-[8px] font-mono font-bold text-slate-800 block">
+                <span className="text-[8.5px] font-mono font-bold text-slate-900 block">
                   CLIENT
                 </span>
-                <span className="text-[6.5px] font-mono text-slate-400 block -mt-0.5">
+                <span className="text-[6.5px] font-mono font-medium text-slate-500 block -mt-0.5">
                   Web &amp; Mobile
                 </span>
               </div>
@@ -384,19 +384,19 @@ export function SystemArchitectureVisual({ isCardHovered: propHover }) {
                 : 'translateZ(14px)',
             }}
           >
-            <div className={`flex items-center gap-1 px-2 py-1 rounded-lg bg-white/92 backdrop-blur-md border transition-all duration-200 ${
+            <div className={`flex items-center gap-1 px-2 py-1 rounded-lg bg-white/95 backdrop-blur-md border transition-all duration-200 ${
               isCardHovered
-                ? 'border-indigo-300/70 shadow-[0_6px_14px_-2px_rgba(99,102,241,0.16)]'
-                : 'border-slate-200/80 shadow-[0_4px_10px_-2px_rgba(99,102,241,0.08)]'
+                ? 'border-indigo-400/80 shadow-[0_8px_18px_-2px_rgba(99,102,241,0.20)]'
+                : 'border-slate-300/90 shadow-[0_6px_14px_-2px_rgba(99,102,241,0.12)]'
             }`}>
-              <div className="w-3.5 h-3.5 rounded bg-indigo-50 border border-indigo-200/60 flex items-center justify-center text-indigo-600">
+              <div className="w-3.5 h-3.5 rounded bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-600">
                 <ShieldCheck className="w-2.5 h-2.5" />
               </div>
               <div className="leading-tight">
-                <span className="text-[7.5px] font-mono font-bold text-slate-700 block">
+                <span className="text-[8px] font-mono font-bold text-slate-900 block">
                   AUTH
                 </span>
-                <span className="text-[6px] font-mono text-slate-400 block -mt-0.5">
+                <span className="text-[6px] font-mono font-medium text-slate-500 block -mt-0.5">
                   Security
                 </span>
               </div>
@@ -416,20 +416,20 @@ export function SystemArchitectureVisual({ isCardHovered: propHover }) {
           >
             <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-white via-white to-indigo-50/70 backdrop-blur-md border transition-all duration-200 ${
               isCardHovered
-                ? 'border-indigo-400 shadow-[0_10px_24px_-4px_rgba(99,102,241,0.26),0_2px_8px_rgba(15,23,42,0.08),inset_0_1px_0_rgba(255,255,255,1)]'
-                : 'border-indigo-300/80 shadow-[0_8px_20px_-4px_rgba(99,102,241,0.20),0_2px_6px_rgba(15,23,42,0.06),inset_0_1px_0_rgba(255,255,255,1)]'
+                ? 'border-indigo-500 shadow-[0_12px_28px_-4px_rgba(99,102,241,0.30),0_2px_8px_rgba(15,23,42,0.08),inset_0_1px_0_rgba(255,255,255,1)]'
+                : 'border-indigo-400 shadow-[0_10px_22px_-4px_rgba(99,102,241,0.24),0_2px_6px_rgba(15,23,42,0.06),inset_0_1px_0_rgba(255,255,255,1)]'
             }`}>
               <div className="w-4 h-4 rounded-md bg-indigo-600 flex items-center justify-center text-white shadow-2xs">
                 <Cpu className="w-2.5 h-2.5" />
               </div>
               <div className="leading-tight">
                 <div className="flex items-center gap-1">
-                  <span className="text-[8.5px] font-mono font-black text-indigo-950 block">
+                  <span className="text-[8.5px] font-mono font-black text-slate-950 block">
                     API GATEWAY
                   </span>
                   <span className={`w-1.5 h-1.5 rounded-full bg-emerald-500 ${isCardHovered ? 'animate-ping' : 'animate-pulse'}`} />
                 </div>
-                <span className="text-[6.5px] font-mono text-indigo-600/80 block -mt-0.5">
+                <span className="text-[6.5px] font-mono font-medium text-indigo-600 block -mt-0.5">
                   Edge Routing &amp; Proxy
                 </span>
               </div>
@@ -447,19 +447,19 @@ export function SystemArchitectureVisual({ isCardHovered: propHover }) {
                 : 'translateZ(14px)',
             }}
           >
-            <div className={`flex items-center gap-1 px-2 py-1 rounded-lg bg-white/92 backdrop-blur-md border transition-all duration-200 ${
+            <div className={`flex items-center gap-1 px-2 py-1 rounded-lg bg-white/95 backdrop-blur-md border transition-all duration-200 ${
               isCardHovered
-                ? 'border-purple-300/70 shadow-[0_6px_14px_-2px_rgba(139,92,246,0.16)]'
-                : 'border-slate-200/80 shadow-[0_4px_10px_-2px_rgba(99,102,241,0.08)]'
+                ? 'border-purple-400/80 shadow-[0_8px_18px_-2px_rgba(139,92,246,0.20)]'
+                : 'border-slate-300/90 shadow-[0_6px_14px_-2px_rgba(99,102,241,0.12)]'
             }`}>
-              <div className="w-3.5 h-3.5 rounded bg-purple-50 border border-purple-200/60 flex items-center justify-center text-purple-600">
+              <div className="w-3.5 h-3.5 rounded bg-purple-50 border border-purple-200 flex items-center justify-center text-purple-600">
                 <Globe className="w-2.5 h-2.5" />
               </div>
               <div className="leading-tight">
-                <span className="text-[7.5px] font-mono font-bold text-slate-700 block">
+                <span className="text-[8px] font-mono font-bold text-slate-900 block">
                   INTEGRATION
                 </span>
-                <span className="text-[6px] font-mono text-slate-400 block -mt-0.5">
+                <span className="text-[6px] font-mono font-medium text-slate-500 block -mt-0.5">
                   Webhooks
                 </span>
               </div>
@@ -482,17 +482,17 @@ export function SystemArchitectureVisual({ isCardHovered: propHover }) {
           >
             <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/95 backdrop-blur-md border transition-all duration-200 ${
               isCardHovered
-                ? 'border-indigo-300/80 shadow-[0_6px_16px_-2px_rgba(99,102,241,0.18)]'
-                : 'border-slate-200/90 shadow-[0_4px_12px_-2px_rgba(99,102,241,0.10)]'
+                ? 'border-indigo-400/90 shadow-[0_8px_20px_-2px_rgba(99,102,241,0.22)]'
+                : 'border-slate-300/90 shadow-[0_6px_16px_-2px_rgba(99,102,241,0.14)]'
             }`}>
-              <div className="w-4 h-4 rounded-md bg-indigo-50 border border-indigo-200/70 flex items-center justify-center text-indigo-600">
+              <div className="w-4 h-4 rounded-md bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-600">
                 <Layers className="w-2.5 h-2.5" />
               </div>
               <div className="leading-tight">
-                <span className="text-[8px] font-mono font-bold text-slate-800 block">
+                <span className="text-[8.5px] font-mono font-bold text-slate-900 block">
                   SERVICES
                 </span>
-                <span className="text-[6.5px] font-mono text-slate-400 block -mt-0.5">
+                <span className="text-[6.5px] font-mono font-medium text-slate-500 block -mt-0.5">
                   Micro-Logic
                 </span>
               </div>
@@ -512,17 +512,17 @@ export function SystemArchitectureVisual({ isCardHovered: propHover }) {
           >
             <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/95 backdrop-blur-md border transition-all duration-200 ${
               isCardHovered
-                ? 'border-violet-300/80 shadow-[0_6px_16px_-2px_rgba(139,92,246,0.18)]'
-                : 'border-slate-200/90 shadow-[0_4px_12px_-2px_rgba(99,102,241,0.10)]'
+                ? 'border-violet-400/90 shadow-[0_8px_20px_-2px_rgba(139,92,246,0.22)]'
+                : 'border-slate-300/90 shadow-[0_6px_16px_-2px_rgba(99,102,241,0.14)]'
             }`}>
-              <div className="w-4 h-4 rounded-md bg-violet-50 border border-violet-200/70 flex items-center justify-center text-violet-600">
+              <div className="w-4 h-4 rounded-md bg-violet-50 border border-violet-200 flex items-center justify-center text-violet-600">
                 <GitBranch className="w-2.5 h-2.5" />
               </div>
               <div className="leading-tight">
-                <span className="text-[8px] font-mono font-bold text-slate-800 block">
+                <span className="text-[8.5px] font-mono font-bold text-slate-900 block">
                   LOGIC
                 </span>
-                <span className="text-[6.5px] font-mono text-slate-400 block -mt-0.5">
+                <span className="text-[6.5px] font-mono font-medium text-slate-500 block -mt-0.5">
                   Event Bus
                 </span>
               </div>
@@ -544,17 +544,17 @@ export function SystemArchitectureVisual({ isCardHovered: propHover }) {
           >
             <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/95 backdrop-blur-md border transition-all duration-200 ${
               isCardHovered
-                ? 'border-blue-300/80 shadow-[0_8px_18px_-3px_rgba(59,130,246,0.18)]'
-                : 'border-slate-200/90 shadow-[0_6px_16px_-3px_rgba(99,102,241,0.12)]'
+                ? 'border-blue-400/90 shadow-[0_10px_22px_-3px_rgba(59,130,246,0.22)]'
+                : 'border-slate-300/90 shadow-[0_8px_18px_-3px_rgba(99,102,241,0.15)]'
             }`}>
-              <div className="w-4 h-4 rounded-md bg-blue-50 border border-blue-200/70 flex items-center justify-center text-blue-600">
+              <div className="w-4 h-4 rounded-md bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600">
                 <Database className="w-2.5 h-2.5" />
               </div>
               <div className="leading-tight">
-                <span className="text-[8px] font-mono font-bold text-slate-800 block">
+                <span className="text-[8.5px] font-mono font-bold text-slate-900 block">
                   DATABASE
                 </span>
-                <span className="text-[6.5px] font-mono text-slate-400 block -mt-0.5">
+                <span className="text-[6.5px] font-mono font-medium text-slate-500 block -mt-0.5">
                   Distributed Cluster
                 </span>
               </div>

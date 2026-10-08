@@ -38,13 +38,13 @@ export function WebPlatformVisual({ isCardHovered: propHover }) {
     <div
       className="my-4 sm:my-5 rounded-2xl relative overflow-hidden p-3 sm:p-4 select-none transition-all duration-300"
       style={{
-        background: 'rgba(255, 255, 255, 0.72)',
+        background: 'rgba(255, 255, 255, 0.95)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
-        border: '1px solid rgba(226, 232, 240, 0.8)',
+        border: '1px solid rgba(226, 232, 240, 0.90)',
         boxShadow: isCardHovered
-          ? '0 16px 36px -10px rgba(99, 102, 241, 0.16), 0 4px 12px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8)'
-          : '0 12px 30px -10px rgba(99, 102, 241, 0.12), 0 4px 12px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
+          ? '0 20px 45px -10px rgba(99, 102, 241, 0.18), 0 4px 14px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.95)'
+          : '0 16px 35px -10px rgba(99, 102, 241, 0.12), 0 4px 12px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.95)',
       }}
     >
       {/* 1. Ambient Background Glow (intensifies subtly on card hover) */}
@@ -132,23 +132,23 @@ export function WebPlatformVisual({ isCardHovered: propHover }) {
               : 'translateY(0px) rotateX(7deg) rotateY(-6deg) rotateZ(0.5deg)',
             transformStyle: shouldReduceMotion ? 'flat' : 'preserve-3d',
             background:
-              'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.90) 100%)',
+              'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.92) 100%)',
             backdropFilter: 'blur(12px)',
             WebkitBackdropFilter: 'blur(12px)',
-            border: '1px solid rgba(226, 232, 240, 0.85)',
+            border: '1px solid rgba(203, 213, 225, 0.95)',
             boxShadow: isCardHovered
-              ? '0 18px 40px -12px rgba(99, 102, 241, 0.20), 0 6px 14px -2px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.95)'
-              : '0 14px 32px -12px rgba(99, 102, 241, 0.14), 0 4px 10px -2px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.95)',
+              ? '0 20px 45px -12px rgba(99, 102, 241, 0.22), 0 6px 14px -2px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.95)'
+              : '0 14px 34px -12px rgba(99, 102, 241, 0.15), 0 4px 10px -2px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.95)',
           }}
         >
           {/* A. Platform Window Header */}
-          <div className="flex items-center justify-between pb-2 mb-2 border-b border-indigo-100/70">
+          <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-200/90">
             {/* Window Controls */}
             <div className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-slate-300/90" />
               <span className="w-2 h-2 rounded-full bg-indigo-300/80" />
               <span className="w-2 h-2 rounded-full bg-blue-300/80" />
-              <span className="ml-2 text-[9px] font-mono font-medium text-slate-500 hidden xs:inline-block">
+              <span className="ml-2 text-[9px] font-mono font-semibold text-slate-600 hidden xs:inline-block">
                 platform / overview
               </span>
             </div>
@@ -163,32 +163,32 @@ export function WebPlatformVisual({ isCardHovered: propHover }) {
           {/* B. Platform Workspace: Mini Nav Rail + Interactive Content */}
           <div className="grid grid-cols-12 gap-2 items-stretch">
             {/* Left Mini Nav Rail */}
-            <div className="col-span-3 flex flex-col justify-between py-0.5 pr-1.5 border-r border-indigo-100/60">
+            <div className="col-span-3 flex flex-col justify-between py-0.5 pr-1.5 border-r border-slate-200/90">
               <div className="space-y-1">
                 {/* Active Tab: Overview */}
-                <div className="px-1.5 py-1 rounded-md bg-gradient-to-r from-indigo-50 to-blue-50 border border-indigo-200/80 text-indigo-700 text-[9px] font-mono font-bold flex items-center gap-1 shadow-2xs">
+                <div className="px-1.5 py-1 rounded-md bg-gradient-to-r from-indigo-50 to-blue-50 border border-indigo-200/90 text-indigo-700 text-[9px] font-mono font-bold flex items-center gap-1 shadow-2xs">
                   <Layers className="w-2.5 h-2.5 text-indigo-600 shrink-0" />
                   <span className="truncate">Overview</span>
                 </div>
                 {/* Inactive Tab: Analytics */}
-                <div className="px-1.5 py-0.5 rounded text-slate-500 text-[8.5px] font-mono flex items-center gap-1 hover:text-slate-700 transition-colors">
-                  <Activity className="w-2 h-2 text-slate-400 shrink-0" />
+                <div className="px-1.5 py-0.5 rounded text-slate-600 text-[8.5px] font-mono flex items-center gap-1 hover:text-slate-800 transition-colors">
+                  <Activity className="w-2 h-2 text-slate-500 shrink-0" />
                   <span className="truncate">Analytics</span>
                 </div>
                 {/* Inactive Tab: Users */}
-                <div className="px-1.5 py-0.5 rounded text-slate-500 text-[8.5px] font-mono flex items-center gap-1 hover:text-slate-700 transition-colors">
-                  <Users className="w-2 h-2 text-slate-400 shrink-0" />
+                <div className="px-1.5 py-0.5 rounded text-slate-600 text-[8.5px] font-mono flex items-center gap-1 hover:text-slate-800 transition-colors">
+                  <Users className="w-2 h-2 text-slate-500 shrink-0" />
                   <span className="truncate">Users</span>
                 </div>
               </div>
 
               {/* Mini Health Status Indicator */}
-              <div className="pt-1.5 mt-1 border-t border-slate-100">
-                <div className="flex items-center justify-between text-[7.5px] font-mono text-slate-400 mb-0.5">
+              <div className="pt-1.5 mt-1 border-t border-slate-200/80">
+                <div className="flex items-center justify-between text-[7.5px] font-mono text-slate-500 mb-0.5">
                   <span>Pipeline</span>
                   <span className="text-indigo-600 font-semibold">Active</span>
                 </div>
-                <div className="h-1 w-full bg-slate-100 rounded-full overflow-hidden">
+                <div className="h-1 w-full bg-slate-200/70 rounded-full overflow-hidden">
                   <div className="h-full w-4/5 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500" />
                 </div>
               </div>
@@ -199,12 +199,12 @@ export function WebPlatformVisual({ isCardHovered: propHover }) {
               {/* Mini Metrics Tiles */}
               <div className="grid grid-cols-2 gap-1.5 mb-1.5">
                 {/* Metric 1: Activity */}
-                <div className="p-1.5 rounded-lg bg-indigo-50/50 border border-indigo-100/80 flex items-center justify-between">
+                <div className="p-1.5 rounded-lg bg-slate-50 border border-slate-200/90 flex items-center justify-between">
                   <div>
-                    <span className="text-[8px] font-mono text-slate-500 block leading-tight">
+                    <span className="text-[8px] font-mono text-slate-600 block leading-tight">
                       Activity
                     </span>
-                    <span className="text-[9.5px] font-mono font-bold text-slate-800">
+                    <span className="text-[9.5px] font-mono font-bold text-slate-900">
                       Synchronized
                     </span>
                   </div>
@@ -214,12 +214,12 @@ export function WebPlatformVisual({ isCardHovered: propHover }) {
                 </div>
 
                 {/* Metric 2: Data Flow */}
-                <div className="p-1.5 rounded-lg bg-blue-50/50 border border-blue-100/80 flex items-center justify-between">
+                <div className="p-1.5 rounded-lg bg-slate-50 border border-slate-200/90 flex items-center justify-between">
                   <div>
-                    <span className="text-[8px] font-mono text-slate-500 block leading-tight">
+                    <span className="text-[8px] font-mono text-slate-600 block leading-tight">
                       Data
                     </span>
-                    <span className="text-[9.5px] font-mono font-bold text-slate-800">
+                    <span className="text-[9.5px] font-mono font-bold text-slate-900">
                       Streaming
                     </span>
                   </div>
@@ -232,8 +232,8 @@ export function WebPlatformVisual({ isCardHovered: propHover }) {
               </div>
 
               {/* Abstract Area Chart Visualization */}
-              <div className="rounded-lg bg-slate-50/80 border border-slate-200/70 p-1.5 relative overflow-hidden">
-                <div className="flex items-center justify-between text-[8px] font-mono text-slate-500 mb-0.5">
+              <div className="rounded-lg bg-slate-50 border border-slate-200/90 p-1.5 relative overflow-hidden">
+                <div className="flex items-center justify-between text-[8px] font-mono text-slate-600 mb-0.5">
                   <span className="flex items-center gap-1">
                     <Sparkles className="w-2 h-2 text-indigo-500" />
                     <span>Interface Flow</span>
@@ -322,7 +322,7 @@ export function WebPlatformVisual({ isCardHovered: propHover }) {
               'linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(240, 244, 255, 0.90) 100%)',
             backdropFilter: 'blur(10px)',
             WebkitBackdropFilter: 'blur(10px)',
-            border: '1px solid rgba(226, 232, 240, 0.85)',
+            border: '1px solid rgba(203, 213, 225, 0.95)',
             boxShadow: isCardHovered
               ? '0 14px 32px -6px rgba(99, 102, 241, 0.22), 0 4px 10px -2px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.95)'
               : '0 12px 28px -6px rgba(99, 102, 241, 0.18), 0 3px 8px -2px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.95)',
@@ -359,7 +359,7 @@ export function WebPlatformVisual({ isCardHovered: propHover }) {
               'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(245, 248, 255, 0.92) 100%)',
             backdropFilter: 'blur(10px)',
             WebkitBackdropFilter: 'blur(10px)',
-            border: '1px solid rgba(226, 232, 240, 0.85)',
+            border: '1px solid rgba(203, 213, 225, 0.95)',
             boxShadow: isCardHovered
               ? '0 16px 34px -6px rgba(99, 102, 241, 0.24), 0 5px 12px -2px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.95)'
               : '0 14px 30px -6px rgba(99, 102, 241, 0.20), 0 4px 10px -2px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.95)',
@@ -394,7 +394,7 @@ export function WebPlatformVisual({ isCardHovered: propHover }) {
               'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.90) 100%)',
             backdropFilter: 'blur(8px)',
             WebkitBackdropFilter: 'blur(8px)',
-            border: '1px solid rgba(226, 232, 240, 0.85)',
+            border: '1px solid rgba(203, 213, 225, 0.95)',
             boxShadow:
               '0 8px 18px -4px rgba(99, 102, 241, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9)',
           }}

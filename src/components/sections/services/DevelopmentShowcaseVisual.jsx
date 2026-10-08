@@ -771,7 +771,7 @@ export function DevelopmentShowcaseVisual({ activeNode = 'development', onSelect
             className={`absolute ${card.desktopPos} z-30 hidden lg:flex items-center justify-between gap-3 w-[215px] xl:w-[230px] p-3 rounded-2xl backdrop-blur-xl border transition-all duration-300 text-left cursor-pointer group focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
               isActive
                 ? 'bg-white/95 border-indigo-500/80 shadow-[0_16px_36px_-6px_rgba(99,102,241,0.28)] ring-2 ring-indigo-500/30'
-                : 'bg-white/80 border-white/90 shadow-[0_10px_25px_-6px_rgba(15,23,42,0.06),0_4px_12px_rgba(59,130,246,0.03)] hover:bg-white/90 hover:border-indigo-300/50 hover:shadow-md'
+                : 'bg-white/92 border-slate-200/90 shadow-[0_12px_28px_-6px_rgba(99,102,241,0.12),0_4px_12px_rgba(15,23,42,0.04)] hover:bg-white hover:border-indigo-300/80 hover:shadow-[0_16px_36px_-6px_rgba(99,102,241,0.20)]'
             }`}
           >
             {/* Left: Icon & Text */}
@@ -826,7 +826,7 @@ export function DevelopmentShowcaseVisual({ activeNode = 'development', onSelect
               className={`flex items-center justify-between gap-2 p-2.5 rounded-xl backdrop-blur-md border shadow-sm transition-all text-left cursor-pointer ${
                 isActive
                   ? 'bg-white border-blue-500 ring-2 ring-blue-500/20'
-                  : 'bg-white/90 border-white/95 hover:bg-white'
+                  : 'bg-white/92 border-slate-200/90 shadow-xs hover:bg-white hover:border-indigo-300/60'
               }`}
             >
               <div className="flex items-center gap-2 min-w-0">

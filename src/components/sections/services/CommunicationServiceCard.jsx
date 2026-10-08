@@ -128,8 +128,8 @@ export function CommunicationServiceCard({ service, index = 0 }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-40px' }}
       transition={{
-        duration: 0.4,
-        delay: shouldReduceMotion ? 0 : index * 0.04,
+        duration: 0.3,
+        delay: shouldReduceMotion ? 0 : index * 0.03,
         ease: [0.16, 1, 0.3, 1],
       }}
       whileHover={shouldReduceMotion ? {} : { y: -3 }}
@@ -218,18 +218,17 @@ export function CommunicationServiceCard({ service, index = 0 }) {
       <div className="pt-3 border-t border-slate-100/90 flex items-center justify-between">
         <a
           href="#contact"
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] text-xs font-mono transition-all duration-200"
+          className="group/cta inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] text-xs font-mono transition-all duration-200 select-none cursor-pointer"
           style={{
             background: isHovered ? style.ctaBgHover : 'rgba(248, 250, 252, 0.75)',
             border: `1px solid ${isHovered ? style.ctaBorderHover : 'rgba(226, 232, 240, 0.75)'}`,
             color: isHovered ? style.ctaText : '#64748b',
           }}
         >
-          <span>Channel Integration</span>
+          <span className="transition-all duration-200 group-hover/cta:font-semibold">Channel Integration</span>
           <ArrowRight
-            className="w-3.5 h-3.5 transition-transform duration-200"
+            className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1.5 group-hover/cta:translate-x-1.5"
             style={{
-              transform: isHovered ? 'translateX(4px)' : 'translateX(0)',
               color: isHovered ? style.ctaText : '#94a3b8',
             }}
           />

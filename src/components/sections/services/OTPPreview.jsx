@@ -1,131 +1,147 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { ShieldCheck, Lock, CheckCircle2, KeyRound, Sparkles } from 'lucide-react';
+import { ShieldCheck, Lock, KeyRound } from 'lucide-react';
 
 /**
  * OTPPreview Component
  * 
  * Interactive security micro-preview inside the OTP Service featured card.
- * Communicates: Security, Verification, Authentication.
- * Features 4 sequential OTP input cells, animated delivery circuit, and verified state.
- * Strictly avoids fake numerical claims (e.g. no fake 99.9% delivery).
+ * Communicates: Secure Verification, Authentication, Verification Flow.
+ * Features 4 distinct passcode boxes with inner shadow, visible indigo dots,
+ * and a smooth sequential typing/verification animation.
  * Respects prefers-reduced-motion.
  */
 export function OTPPreview({ isHovered = false }) {
   const shouldReduceMotion = useReducedMotion();
-  const [activeStep, setActiveStep] = useState(4);
+  const [filledCount, setFilledCount] = useState(4);
 
-  // Subtle sequential dot appearance (cycles 0 -> 1 -> 2 -> 3 -> 4)
+  // Subtle sequential passcode animation: 0 -> 1 -> 2 -> 3 -> 4, pause, loop
   useEffect(() => {
-    if (shouldReduceMotion) return;
-    const interval = setInterval(() => {
-      setActiveStep((prev) => (prev >= 4 ? 0 : prev + 1));
-    }, isHovered ? 650 : 1100);
+    if (shouldReduceMotion) {
+      setFilledCount(4);
+      return;
+    }
 
-    return () => clearInterval(interval);
-  }, [shouldReduceMotion, isHovered]);
+    let timeoutId;
+    let isCancelled = false;
 
-  const otpDots = [0, 1, 2, 3];
+    const runSequence = (step) => {
+      if (isCancelled) return;
+      setFilledCount(step);
+
+      if (step < 4) {
+        // advance each digit after 380ms
+        timeoutId = setTimeout(() => runSequence(step + 1), 380);
+      } else {
+        // pause for 1600ms after all four dots are filled, then restart
+        timeoutId = setTimeout(() => runSequence(0), 1600);
+      }
+    };
+
+    // kick off first sequence
+    timeoutId = setTimeout(() => runSequence(1), 600);
+
+    return () => {
+      isCancelled = true;
+      clearTimeout(timeoutId);
+    };
+  }, [shouldReduceMotion]);
 
   return (
     <div
-      className="relative rounded-2xl p-3.5 sm:p-4 transition-all duration-300 select-none overflow-hidden"
+      className="relative rounded-2xl p-3.5 sm:p-4 select-none overflow-hidden transition-all duration-300"
       style={{
-        background: 'rgba(255, 255, 255, 0.72)',
+        background: 'rgba(255, 255, 255, 0.90)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
-        border: '1px solid rgba(99, 102, 241, 0.20)',
+        border: '1px solid rgba(226, 232, 240, 0.80)',
         boxShadow: isHovered
-          ? '0 16px 36px -10px rgba(99, 102, 241, 0.18), 0 4px 12px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.8)'
-          : '0 12px 30px -10px rgba(99, 102, 241, 0.12), 0 4px 12px rgba(15, 23, 42, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
+          ? '0 18px 40px -16px rgba(99, 102, 241, 0.16), 0 12px 30px -10px rgba(99, 102, 241, 0.12)'
+          : '0 12px 30px -10px rgba(99, 102, 241, 0.12), 0 2px 8px rgba(15, 23, 42, 0.04)',
       }}
     >
-      {/* Background ambient indigo/purple glow */}
+      {/* Subtle indigo ambient glow inside mockup */}
       <div
-        className="pointer-events-none absolute -top-8 -right-8 w-40 h-40 rounded-full transition-opacity duration-500"
+        className="pointer-events-none absolute inset-0 transition-opacity duration-500"
         style={{
-          background: 'radial-gradient(circle, rgba(99, 102, 241, 0.15), transparent 70%)',
-          opacity: isHovered ? 1 : 0.6,
+          background: 'radial-gradient(circle at 85% 20%, rgba(99, 102, 241, 0.10), transparent 45%)',
+          opacity: isHovered ? 1 : 0.8,
         }}
         aria-hidden="true"
       />
 
       {/* Header Bar */}
-      <div className="flex items-center justify-between pb-2.5 mb-3 border-b border-indigo-100/60">
+      <div className="relative z-10 flex items-center justify-between pb-2.5 mb-3 border-b border-slate-200/80">
         <div className="flex items-center gap-2">
-          <div className="w-5 h-5 rounded-md bg-indigo-50 border border-indigo-200/70 flex items-center justify-center text-indigo-600">
-            <ShieldCheck className="w-3 h-3" />
+          <div className="w-5 h-5 rounded-md bg-indigo-50 border border-indigo-200/80 flex items-center justify-center text-indigo-600 shadow-2xs">
+            <ShieldCheck className="w-3.5 h-3.5" />
           </div>
-          <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-800">
+          <span className="text-[10.5px] font-mono font-bold tracking-wider text-slate-800">
             Secure Verification
           </span>
         </div>
 
-        <span className="text-[9px] font-mono font-medium text-indigo-700 bg-indigo-50/90 border border-indigo-200/80 px-2 py-0.5 rounded-full">
-          Verification Flow
+        <span className="inline-flex items-center gap-1 text-[9px] font-mono text-indigo-700 bg-indigo-50/90 border border-indigo-200/80 px-2 py-0.5 rounded-full font-medium">
+          <span>Verification Code</span>
         </span>
       </div>
 
       {/* Main OTP Input Cells Stage */}
-      <div className="py-2 flex flex-col items-center justify-center">
+      <div className="relative z-10 py-2.5 flex flex-col items-center justify-center">
         {/* Sublabel */}
-        <span className="text-[10px] font-mono text-slate-500 mb-2.5 flex items-center gap-1.5">
+        <span className="text-[10px] font-mono text-slate-500 mb-3 flex items-center gap-1.5 font-medium">
           <Lock className="w-2.5 h-2.5 text-indigo-500" />
           <span>One-Time Authentication Passcode</span>
         </span>
 
         {/* 4 OTP Input Boxes */}
-        <div className="flex items-center gap-2.5 sm:gap-3 mb-3">
-          {otpDots.map((index) => {
-            const isFilled = shouldReduceMotion || activeStep > index;
-            const isCurrent = !shouldReduceMotion && activeStep === index;
+        <div className="flex items-center gap-2.5 sm:gap-3.5 mb-3">
+          {[0, 1, 2, 3].map((idx) => {
+            const isFilled = filledCount > idx;
+            const isCurrent = !shouldReduceMotion && filledCount === idx;
 
             return (
-              <motion.div
-                key={index}
-                animate={
-                  shouldReduceMotion
-                    ? {}
-                    : {
-                        scale: isCurrent ? 1.08 : 1,
-                        y: isFilled ? -2 : 0,
-                      }
-                }
-                transition={{ duration: 0.2 }}
-                className={`w-10 h-11 sm:w-11 sm:h-12 rounded-xl flex items-center justify-center transition-all duration-200 shadow-2xs ${
+              <div
+                key={idx}
+                className={`w-10 h-11 sm:w-11 sm:h-12 rounded-xl flex items-center justify-center transition-all duration-200 bg-white ${
                   isFilled
-                    ? 'bg-gradient-to-b from-indigo-50/90 to-white border-2 border-indigo-500/70 text-indigo-900 shadow-indigo-500/10'
+                    ? 'border border-indigo-400/90 shadow-[inset_0_1.5px_3px_rgba(99,102,241,0.08),0_2px_8px_rgba(99,102,241,0.12)]'
                     : isCurrent
-                    ? 'bg-white border-2 border-indigo-400 ring-2 ring-indigo-400/20'
-                    : 'bg-white/80 border border-slate-200/90 text-slate-300'
+                    ? 'border border-indigo-400 ring-2 ring-indigo-400/20 shadow-[inset_0_1.5px_3px_rgba(15,23,42,0.06)]'
+                    : 'border border-slate-200/90 shadow-[inset_0_1.5px_3px_rgba(15,23,42,0.05)]'
                 }`}
               >
                 {isFilled ? (
-                  <span className="w-2.5 h-2.5 rounded-full bg-indigo-600 shadow-2xs" />
+                  <motion.span
+                    initial={shouldReduceMotion ? { scale: 1, opacity: 1 } : { scale: 0.6, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                    className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-indigo-600 shadow-2xs"
+                  />
                 ) : (
-                  <span className="text-slate-300 font-mono text-xs">•</span>
+                  <span className="w-2 h-2 rounded-full border border-slate-200 bg-slate-100/60" />
                 )}
-              </motion.div>
+              </div>
             );
           })}
         </div>
 
         {/* Delivery Flow Circuit Indicator */}
-        <div className="flex items-center gap-2 text-[9px] font-mono text-slate-500">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-          <span>Delivery Pipeline Active</span>
+        <div className="flex items-center gap-2 text-[9px] font-mono text-slate-500 font-medium">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-xs" />
+          <span>Secure Channel</span>
           <span className="text-slate-300">•</span>
-          <span className="text-indigo-600 font-semibold">Instant Handshake</span>
+          <span className="text-indigo-600 font-semibold">Zero-Persistence Verification</span>
         </div>
       </div>
 
       {/* Footer Status readout */}
-      <div className="pt-2.5 mt-2 border-t border-indigo-100/60 flex items-center justify-between text-[8px] sm:text-[8.5px] font-mono text-slate-500">
+      <div className="relative z-10 pt-2.5 mt-2 border-t border-slate-200/70 flex items-center justify-between text-[9px] sm:text-[9.5px] font-mono">
         <span className="text-indigo-700 font-semibold flex items-center gap-1">
           <KeyRound className="w-2.5 h-2.5 text-indigo-500" />
           <span>Encrypted Session Protocol</span>
         </span>
-        <span className="text-slate-400">Zero-Persistence Delivery</span>
+        <span className="text-slate-500 font-medium">Authentication Active</span>
       </div>
     </div>
   );

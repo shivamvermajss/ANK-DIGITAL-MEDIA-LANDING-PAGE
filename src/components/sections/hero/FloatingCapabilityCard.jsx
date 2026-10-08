@@ -63,7 +63,7 @@ export function FloatingCapabilityCard({ card, isMobile }) {
       whileHover={shouldReduceMotion ? {} : { scale: 1.04, y: -2 }}
       className={`absolute ${card.desktopPos} z-[25] select-none group cursor-pointer transition-shadow duration-300`}
     >
-      <div className="relative flex items-center gap-2.5 sm:gap-3 p-2.5 sm:p-3 sm:pr-3.5 rounded-2xl bg-white/85 backdrop-blur-2xl border border-white/95 ring-1 ring-blue-500/10 shadow-[0_16px_36px_-6px_rgba(15,23,42,0.12),0_4px_16px_rgba(59,130,246,0.08)] group-hover:shadow-[0_22px_45px_-6px_rgba(99,102,241,0.25)] group-hover:border-blue-400/50 transition-all max-w-[215px] sm:max-w-[245px] lg:max-w-[265px] overflow-hidden">
+      <div className="relative flex items-center gap-2.5 sm:gap-3 p-2.5 sm:p-3 sm:pr-3.5 rounded-2xl bg-white/92 backdrop-blur-xl border border-slate-200/90 ring-1 ring-indigo-500/10 shadow-[0_12px_30px_-8px_rgba(99,102,241,0.14),0_4px_14px_-2px_rgba(15,23,42,0.06)] group-hover:shadow-[0_20px_42px_-8px_rgba(99,102,241,0.25),0_6px_18px_rgba(15,23,42,0.08)] group-hover:border-indigo-300 transition-all max-w-[215px] sm:max-w-[245px] lg:max-w-[265px] overflow-hidden">
         {/* Top edge glossy highlight sheen */}
         <div className="absolute top-0 inset-x-4 h-[1px] bg-gradient-to-r from-transparent via-white to-transparent opacity-80" />
 

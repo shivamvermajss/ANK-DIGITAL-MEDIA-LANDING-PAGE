@@ -39,10 +39,11 @@ export function GlobalBackground() {
 
       {/* 2. SUBTLE GLOBAL TECHNICAL DOT MATRIX (Barely-there texture) */}
       <div
-        className="absolute inset-0 w-full h-full opacity-40"
+        className="absolute inset-0 w-full h-full pointer-events-none"
         style={{
-          backgroundImage: 'radial-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px)',
-          backgroundSize: '32px 32px',
+          backgroundImage: 'radial-gradient(#cbd5e1 1px, transparent 1px)',
+          backgroundSize: '24px 24px',
+          opacity: 0.30,
         }}
       />
 

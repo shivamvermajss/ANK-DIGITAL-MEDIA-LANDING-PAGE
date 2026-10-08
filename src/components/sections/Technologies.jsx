@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import {
   TECHNOLOGIES_INTRO,
@@ -11,23 +11,19 @@ import { TechnologyEcosystem } from './technologies/TechnologyEcosystem';
 /**
  * Technologies Section Component (2026 Premium Digital Studio Redesign)
  * 
- * Living interactive technology ecosystem:
+ * Living technology ecosystem architecture:
  * - Subtle 22px technical dot-grid canvas
  * - Large ambient radial glows (indigo, purple, cyan)
  * - Capsule badge: [ ● // TECHNOLOGY ECOSYSTEM ]
  * - High-impact centered typography with animated gradient text
- * - Left domain selector with active [ ● INSPECTING ] state
+ * - Left static domain display cards (Frontend, Backend, Database, Integration, Digital)
  * - Bottom floating tech detail card with vector logos
  * - Right live SVG ecosystem canvas with animated data packet particles
  * - Full prefers-reduced-motion support
  */
 export function Technologies() {
   const shouldReduceMotion = useReducedMotion();
-  const [activeCategoryId, setActiveCategoryId] = useState('database');
-
-  const activeCategory =
-    TECHNOLOGY_CATEGORIES.find((c) => c.id === activeCategoryId) ||
-    TECHNOLOGY_CATEGORIES[0];
+  const defaultCategory = TECHNOLOGY_CATEGORIES[0];
 
   return (
     <section
@@ -135,30 +131,21 @@ export function Technologies() {
               <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500">
                 Technology Domains
               </span>
-              <span className="text-xs font-mono text-indigo-600 font-semibold flex items-center gap-1">
-                <span>Select to Inspect</span>
-                <span>→</span>
+              <span className="text-xs font-mono text-indigo-600 font-semibold">
+                TECHNOLOGY ECOSYSTEM
               </span>
             </div>
 
-            {/* Left Domain Selector */}
-            <TechnologyCategory
-              categories={TECHNOLOGY_CATEGORIES}
-              activeCategoryId={activeCategoryId}
-              onSelectCategory={setActiveCategoryId}
-            />
+            {/* Left Static Domain Display Cards */}
+            <TechnologyCategory categories={TECHNOLOGY_CATEGORIES} />
 
-            {/* Active Technology Detail Panel */}
-            <TechnologyDetail category={activeCategory} />
+            {/* Default Technology Detail Panel */}
+            <TechnologyDetail category={defaultCategory} />
           </div>
 
           {/* RIGHT: Interactive Technology Ecosystem Visualization (7 cols on desktop) */}
           <div className="lg:col-span-7">
-            <TechnologyEcosystem
-              categories={TECHNOLOGY_CATEGORIES}
-              activeCategoryId={activeCategoryId}
-              onSelectCategory={setActiveCategoryId}
-            />
+            <TechnologyEcosystem categories={TECHNOLOGY_CATEGORIES} />
           </div>
         </div>
       </div>
